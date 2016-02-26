@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Windows.Security.Authentication.Web;
 using VK.WindowsPhone.SDK.API;
-using VK.WindowsPhone.SDK.Pages;
 using VK.WindowsPhone.SDK.Util;
 
 namespace VK.WindowsPhone.SDK
@@ -441,20 +440,18 @@ namespace VK.WindowsPhone.SDK
 
         internal static void InvokeValidationRequest(VKValidationRequest request, Action<VKValidationResponse> callback)
         {
-            VKExecute.ExecuteOnUIThread(() =>
+            VKExecute.ExecuteOnUIThread(async () =>
                 {
-                    var loginUserControl = new VKLoginUserControl
+                    const string REDIRECT_URL = "https://oauth.vk.com/blank.html";
+                    var authResult = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, new Uri(request.ValidationUri), new Uri(REDIRECT_URL));
+                    var index = authResult.ResponseData.IndexOf('#');
+                    if (index > -1)
                     {
-                        ValidationUri = request.ValidationUri,
-                        ValidationCallback = callback
-                    };
-
-
-                    loginUserControl.ShowInPopup(Windows.UI.Xaml.Window.Current.Bounds.Width,
-                         Windows.UI.Xaml.Window.Current.Bounds.Height); 
+                        var result = authResult.ResponseData.Substring(index + 1);
+                        ProcessLoginResult(result, true, callback);
+                    }
 
                 });
-
         }
     }
 }

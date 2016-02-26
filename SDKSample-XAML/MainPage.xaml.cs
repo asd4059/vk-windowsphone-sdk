@@ -4,12 +4,12 @@ using System.Linq;
 using VK.WindowsPhone.SDK;
 using VK.WindowsPhone.SDK.API;
 using VK.WindowsPhone.SDK.API.Model;
-using VK.WindowsPhone.SDK.Pages;
+//using VK.WindowsPhone.SDK.Pages;
 using VK.WindowsPhone.SDK.Util;
 using VK.WindowsPhone.SDK_XAML.Pages;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Store;
-using Windows.Phone.UI.Input;
+//using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
@@ -24,7 +24,7 @@ namespace SDKSample_XAML
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private List<string> _scope = new List<string> { VKScope.FRIENDS, VKScope.WALL, VKScope.PHOTOS, VKScope.AUDIO };
+        private readonly List<string> _scope = new List<string> { VKScope.FRIENDS, VKScope.WALL, VKScope.PHOTOS, VKScope.AUDIO };
 
         public MainPage()
         {
@@ -53,38 +53,38 @@ namespace SDKSample_XAML
         }
 
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            HookupBackKeyPress(true);
-        }
+        //protected override void OnNavigatedTo(NavigationEventArgs e)
+        //{
+        //    base.OnNavigatedTo(e);
+        //    HookupBackKeyPress(true);
+        //}
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            base.OnNavigatedFrom(e);
-            HookupBackKeyPress(false);
-        }
+        //protected override void OnNavigatedFrom(NavigationEventArgs e)
+        //{
+        //    base.OnNavigatedFrom(e);
+        //    HookupBackKeyPress(false);
+        //}
 
-        private void HookupBackKeyPress(bool subscribe)
-        {
-            if (subscribe)
-            {
-                HardwareButtons.BackPressed += HardwareButtons_BackPressed;
-            }
-            else
-            {
-                HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
-            }
-        }
+        //private void HookupBackKeyPress(bool subscribe)
+        //{
+        //    if (subscribe)
+        //    {
+        //        HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+        //    }
+        //    else
+        //    {
+        //        HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
+        //    }
+        //}
 
-        void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
-        {
-            if (VKPopupControlBase.CurrentlyShownInstances.Count > 0)
-            {
-                VKLoginUserControl.CurrentlyShownInstances.Last().IsShown = false;
-                e.Handled = true;
-            }
-        }
+        //void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
+        //{
+        //    if (VKPopupControlBase.CurrentlyShownInstances.Count > 0)
+        //    {
+        //        VKLoginUserControl.CurrentlyShownInstances.Last().IsShown = false;
+        //        e.Handled = true;
+        //    }
+        //}
 
         private void AuthorizeButtonOnClick(object sender, RoutedEventArgs routedEventArgs)
         {

@@ -247,10 +247,6 @@
       <Link>Pages\VKCaptchaRequestUserControl.xaml.cs</Link>
       <DependentUpon>VKCaptchaRequestUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="..\VK.WindowsPhone.SDK-XAML\Pages\VKLoginUserControl.xaml.cs">
-      <Link>Pages\VKLoginUserControl.xaml.cs</Link>
-      <DependentUpon>VKLoginUserControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\Pages\VKPopupControlBase.cs">
       <Link>Pages\VKPopupControlBase.cs</Link>
     </Compile>
@@ -311,11 +307,6 @@
   <ItemGroup>
     <Page Include="..\VK.WindowsPhone.SDK-XAML\Pages\VKCaptchaRequestUserControl.xaml">
       <Link>Pages\VKCaptchaRequestUserControl.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="..\VK.WindowsPhone.SDK-XAML\Pages\VKLoginUserControl.xaml">
-      <Link>Pages\VKLoginUserControl.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

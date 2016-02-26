@@ -8,23 +8,14 @@ namespace VK.WindowsPhone.SDK_XAML.Pages
     {
         private Popup _parentPopup;
 
-        private static List<VKPopupControlBase> _currentlyShownInstances = new List<VKPopupControlBase>();
+        private static readonly List<VKPopupControlBase> _currentlyShownInstances = new List<VKPopupControlBase>();
 
-        public static List<VKPopupControlBase> CurrentlyShownInstances
-        {
-            get
-            {
-                return _currentlyShownInstances;
-            }
-        }
+        public static List<VKPopupControlBase> CurrentlyShownInstances => _currentlyShownInstances;
 
 
         public bool IsShown
         {
-            get
-            {
-                return _parentPopup.IsOpen;
-            }
+            get { return _parentPopup.IsOpen; }
             set
             {
                 _parentPopup.IsOpen = value;
@@ -45,15 +36,15 @@ namespace VK.WindowsPhone.SDK_XAML.Pages
             if (width.HasValue)
             {
                 popup.Width = width.Value;
-                this.Width = width.Value;
+                Width = width.Value;
             }
             if (height.HasValue)
             {
                 popup.Height = height.Value;
-                this.Height = height.Value;
+                Height = height.Value;
             }
 
-            this._parentPopup = popup;
+            _parentPopup = popup;
 
             popup.Child = this;
 
@@ -61,7 +52,7 @@ namespace VK.WindowsPhone.SDK_XAML.Pages
 
             _currentlyShownInstances.Add(this);
 
-            this.PrepareForLoad();
+            PrepareForLoad();
           
         }
 
