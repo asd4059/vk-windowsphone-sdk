@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 
 namespace VK.WindowsPhone.SDK.Util
 {
@@ -7,16 +6,6 @@ namespace VK.WindowsPhone.SDK.Util
     {
         public static void ExecuteOnUIThread(Action action)
         {
-#if SILVERLIGHT
-            if (Deployment.Current.Dispatcher.CheckAccess())
-            {
-                action();
-            }
-            else
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(action);
-            }
-#else
             var d = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher;
 
             if (d.HasThreadAccess)
@@ -31,7 +20,6 @@ namespace VK.WindowsPhone.SDK.Util
                         action();
                     });
             }
-#endif
         }
     }
 }

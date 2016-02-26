@@ -7,7 +7,6 @@ using System.Xml.Linq;
 using VK.WindowsPhone.SDK.Util;
 using Windows.System;
 using System.IO;
-using System.Windows;
 
 namespace VK.WindowsPhone.SDK
 {
@@ -21,12 +20,12 @@ namespace VK.WindowsPhone.SDK
             List<string> scopeList,
             bool revoke)
         {
-            string redirectUri = await GetRedirectUri();
+            var redirectUri = await GetRedirectUri();
 
             var uriString = string.Format(_launchUriStrFrm,
-                WebUtility.UrlEncode(state == null ? string.Empty : state),
+                WebUtility.UrlEncode(state ?? string.Empty),
                 clientId,
-                StrUtil.GetCommaSeparated(scopeList),
+                scopeList.GetCommaSeparated(),
                 revoke,
                 redirectUri);
 
@@ -39,42 +38,26 @@ namespace VK.WindowsPhone.SDK
 
             try
             {
-
                 await Launcher.LaunchUriAsync(new Uri(uriString), new LauncherOptions() { FallbackUri = new Uri(fallbackUri) });
-
             }
             catch (Exception)
             {
       
-#if SILVERLIGHT
-                var msg = "VK App authorization is not supported for this type of the project. Please, use WebView authorization.";
-                MessageBox.Show(msg);
-#endif
             }
-
-
         }
 
-        private static async Task<string> GetRedirectUri()
-        {
-            return await GetVKLoginCallbackSchemeName() + "://authorize";
-        }
+        private static async Task<string> GetRedirectUri() => await GetVKLoginCallbackSchemeName() + "://authorize";
 
-        async private static Task<string> GetVKLoginCallbackSchemeName()
+        private static async Task<string> GetVKLoginCallbackSchemeName()
         {
-            string result = await GetFilteredManifestAppAttributeValue("Protocol", "Name", "vk");
+            var result = await GetFilteredManifestAppAttributeValue("Protocol", "Name", "vk");
             return result;
         }
 
-        internal async static Task<string> GetFilteredManifestAppAttributeValue(string node, string attribute, string prefix)
+        internal static async Task<string> GetFilteredManifestAppAttributeValue(string node, string attribute, string prefix)
         {
-
-#if !SILVERLIGHT
             var file = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///VKConfig.xml"));
-            using (Stream strm = await file.OpenStreamForReadAsync())
-#else
-            using (System.IO.Stream strm = Microsoft.Xna.Framework.TitleContainer.OpenStream("WMAppManifest.xml"))
-#endif
+            using (var strm = await file.OpenStreamForReadAsync())
             {
                 var xml = XElement.Load(strm);
                 var filteredAttributeValue = (from app in xml.Descendants(node)
@@ -82,12 +65,7 @@ namespace VK.WindowsPhone.SDK
                                               where xAttribute != null
                                               select xAttribute.Value).FirstOrDefault(a => a.StartsWith(prefix));
 
-                if (string.IsNullOrWhiteSpace(filteredAttributeValue))
-                {
-                    return string.Empty;
-                }
-
-                return filteredAttributeValue;
+                return string.IsNullOrWhiteSpace(filteredAttributeValue) ? string.Empty : filteredAttributeValue;
             }
         }
     }

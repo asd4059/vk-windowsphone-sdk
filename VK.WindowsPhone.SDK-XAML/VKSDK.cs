@@ -1,18 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
-#if SILVERLIGHT
-using System.Windows.Controls;
-using Microsoft.Phone.Controls;
-using System.Windows;
-using System.Net;
-#endif
-
 using VK.WindowsPhone.SDK.API;
 using VK.WindowsPhone.SDK.Pages;
 using VK.WindowsPhone.SDK.Util;
-
 
 namespace VK.WindowsPhone.SDK
 {
@@ -42,7 +33,7 @@ namespace VK.WindowsPhone.SDK
         /// </summary>
         private const string VKSDK_ACCESS_TOKEN_ISOLATEDSTORAGE_KEY = "VKSDK_ACCESS_TOKEN_DONTTOUCH";
 
-        private static readonly string VK_NAVIGATE_STR_FRM = "/VK.WindowsPhone.SDK;component/Pages/VKLoginPage.xaml?Scopes={0}&Revoke={1}";
+        private const string VK_NAVIGATE_STR_FRM = "/VK.WindowsPhone.SDK;component/Pages/VKLoginPage.xaml?Scopes={0}&Revoke={1}";
 
         internal static readonly string VK_AUTH_STR_FRM = "https://oauth.vk.com/authorize?client_id={0}&scope={1}&redirect_uri={2}&display=mobile&v={3}&response_type=token&revoke={4}";
 
@@ -52,18 +43,7 @@ namespace VK.WindowsPhone.SDK
         /// </summary>
         internal string CurrentAppID;
 
-        internal static string DeviceId
-        {
-            get
-            {
-#if SILVERLIGHT                                
-                return "";
-                
-#else
-                return Windows.System.UserProfile.AdvertisingManager.AdvertisingId;
-#endif
-            }
-        }
+        internal static string DeviceId => Windows.System.UserProfile.AdvertisingManager.AdvertisingId;
 
         /// <summary>
         /// Initialize SDK
@@ -98,7 +78,7 @@ namespace VK.WindowsPhone.SDK
         {
             Initialize(appId);
             Instance.AccessToken = token;
-            Instance.PerformTokenCheck(token, true);
+            PerformTokenCheck(token, true);
         }
 
         public static Action<VKCaptchaUserRequest, Action<VKCaptchaUserResponse>> CaptchaRequest { private get; set; }
@@ -175,9 +155,6 @@ namespace VK.WindowsPhone.SDK
         
                     break;
                 default:
-#if SILVERLIGHT
-                    RootFrame.Navigate(new Uri(string.Format(VK_NAVIGATE_STR_FRM, string.Join(",", scopeList), revoke), UriKind.Relative));
-#else
                     var loginUserControl = new VKLoginUserControl
                     {
                         Scopes = scopeList,
@@ -188,7 +165,6 @@ namespace VK.WindowsPhone.SDK
                     loginUserControl.ShowInPopup(Windows.UI.Xaml.Window.Current.Bounds.Width,
                          Windows.UI.Xaml.Window.Current.Bounds.Height);
 
-#endif
                     break;
             }
 
@@ -200,17 +176,6 @@ namespace VK.WindowsPhone.SDK
             VKAppLaunchAuthorizationHelper.AuthorizeVKApp("", VKSDK.Instance.CurrentAppID, scopeList, revoke);
         }
 
-#if SILVERLIGHT
-        public static void Publish(VKPublishInputData data)
-        {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-
-            VKParametersRepository.SetParameterForId(VKPublishPage.INPUT_PARAM_ID, data);
-
-            RootFrame.Navigate(new Uri(string.Format("/VK.WindowsPhone.SDK;component/Pages/VKPublishPage.xaml"), UriKind.Relative));
-        }
-#endif
         private enum CheckTokenResult
         {
             None,
@@ -220,16 +185,16 @@ namespace VK.WindowsPhone.SDK
 
         private static void CheckConditions()
         {
-#if SILVERLIGHT
-            if (Application.Current.RootVisual as Frame == null)
-                throw new Exception("Application.Current.RootVisual is supposed to be PhoneApplicationFrame");
+//#if SILVERLIGHT
+//            if (Application.Current.RootVisual as Frame == null)
+//                throw new Exception("Application.Current.RootVisual is supposed to be PhoneApplicationFrame");
 
-#endif
+//#endif
         }
 
-#if SILVERLIGHT
-        internal static PhoneApplicationFrame RootFrame => (PhoneApplicationFrame)Application.Current.RootVisual;
-#endif
+//#if SILVERLIGHT
+//        internal static PhoneApplicationFrame RootFrame => (PhoneApplicationFrame)Application.Current.RootVisual;
+//#endif
 
         /// <summary>
         /// Check new access token and assign as instance token 
@@ -306,7 +271,7 @@ namespace VK.WindowsPhone.SDK
             AccessDenied(null, new VKAccessDeniedEventArgs { AuthorizationError = error });
         }
 
-        private bool PerformTokenCheck(VKAccessToken token, bool isUserDefinedToken = false)
+        private static bool PerformTokenCheck(VKAccessToken token, bool isUserDefinedToken = false)
         {
             if (token == null) return false;
 
@@ -333,14 +298,10 @@ namespace VK.WindowsPhone.SDK
 
             var token = VKAccessToken.TokenFromIsolatedStorage(VKSDK_ACCESS_TOKEN_ISOLATEDSTORAGE_KEY);
 
-            if (!Instance.PerformTokenCheck(token))
-            {
+            if (!PerformTokenCheck(token))
                 result = false;
-            }
             else
-            {
                 Instance.AccessToken = token;
-            }
 
             TrackStats();
 
@@ -349,7 +310,7 @@ namespace VK.WindowsPhone.SDK
 
         private static void TrackStats()
         {
-            long appId = 0;
+            long appId;
             var appIdParsed = long.TryParse(Instance.CurrentAppID, out appId);
 
             if (Instance.AccessToken != null)
@@ -358,19 +319,17 @@ namespace VK.WindowsPhone.SDK
 
                 checkUserInstallRequest.Dispatch<object>((res) =>
                     {
-                        var responseVal = 0;
+                        int responseVal;
 
                         if (res.Data != null && int.TryParse(res.Data.ToString(), out responseVal))
                         {
                             if (responseVal == 1)
-                            {
                                 MobileCatalogInstallationDetected?.Invoke(null, EventArgs.Empty);
-                            }
                         }                        
 
                         var trackVisitorRequest = new VKRequest("stats.trackVisitor");
 
-                        trackVisitorRequest.Dispatch<object>((res2) => { }, (jsonStr) => new object());
+                        trackVisitorRequest.Dispatch(res2 => { }, jsonStr => new object());
 
                     });                
             }
@@ -382,7 +341,7 @@ namespace VK.WindowsPhone.SDK
 
                     checkUserInstallRequest.Dispatch<object>((res) =>
                     {
-                        var responseVal = 0;
+                        int responseVal;
 
                         if (res.Data != null && int.TryParse(res.Data.ToString(), out responseVal))
                         {
@@ -404,15 +363,11 @@ namespace VK.WindowsPhone.SDK
             long appId;
             var appIdParsed = long.TryParse(Instance.CurrentAppID, out appId);
             if (Instance.AccessToken != null)
-            {
                 checkUserInstallRequest = new VKRequest("apps.checkUserInstall", "platform", PLATFORM_ID, "app_id", appId.ToString(), "device_id", DeviceId);
-            }
             else
             {
                 if (!string.IsNullOrEmpty(DeviceId) && appIdParsed)
-                {
                     checkUserInstallRequest = new VKRequest("apps.checkUserInstall", "platform", PLATFORM_ID, "app_id", appId.ToString(), "device_id", DeviceId);
-                }
                 else
                 {
                     resultCallback(false);
@@ -425,9 +380,7 @@ namespace VK.WindowsPhone.SDK
                 var responseVal = 0;
 
                 if (res.Data != null)
-                {
                     int.TryParse(res.Data.ToString(), out responseVal);
-                }
 
                 resultCallback(responseVal == 1);
             });                
@@ -454,9 +407,7 @@ namespace VK.WindowsPhone.SDK
             var success = false;
 
             if (result == null)
-            {
                 SetAccessTokenError(new VKError { error_code = (int)VKResultCode.UserAuthorizationFailed });
-            }
             else
             {
                 var tokenParams = VKUtil.ExplodeQueryString(result);
@@ -465,14 +416,10 @@ namespace VK.WindowsPhone.SDK
                     success = true;
 
                     if (!wasValidating)
-                    {
                         TrackStats();
-                    }
                 }
                 else
-                {
-                    SetAccessTokenError(new VKError { error_code = (int)VKResultCode.UserAuthorizationFailed });
-                }                
+                    SetAccessTokenError(new VKError { error_code = (int)VKResultCode.UserAuthorizationFailed });              
             }
 
             validationCallback?.Invoke(new VKValidationResponse { IsSucceeded = success });
@@ -506,10 +453,6 @@ namespace VK.WindowsPhone.SDK
         {
             VKExecute.ExecuteOnUIThread(() =>
                 {
-#if SILVERLIGHT
-                    VKParametersRepository.SetParameterForId("ValidationCallback", callback);
-                    RootFrame.Navigate(new Uri($"/VK.WindowsPhone.SDK;component/Pages/VKLoginPage.xaml?ValidationUri={HttpUtility.UrlEncode(request.ValidationUri)}", UriKind.Relative));
-#else
                     var loginUserControl = new VKLoginUserControl
                     {
                         ValidationUri = request.ValidationUri,
@@ -519,7 +462,6 @@ namespace VK.WindowsPhone.SDK
 
                     loginUserControl.ShowInPopup(Windows.UI.Xaml.Window.Current.Bounds.Width,
                          Windows.UI.Xaml.Window.Current.Bounds.Height); 
-#endif
 
                 });
 

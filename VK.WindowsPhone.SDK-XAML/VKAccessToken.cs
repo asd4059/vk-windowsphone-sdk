@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-#if SILVERLIGHT
-using System.IO.IsolatedStorage;
-#endif
+﻿using System.Collections.Generic;
 using VK.WindowsPhone.SDK.Util;
 
 namespace VK.WindowsPhone.SDK
@@ -20,67 +16,44 @@ namespace VK.WindowsPhone.SDK
         /// <summary>
         /// String token for use in request parameters
         /// </summary>
-        public string AccessToken = null;
+        public string AccessToken;
 
         /// <summary>
         /// Time when token expires
         /// </summary>
-        public int ExpiresIn = 0;
+        public int ExpiresIn;
 
         /// <summary>
         /// Current user id for this token
         /// </summary>
-        public string UserId = null;
+        public string UserId;
 
         /// <summary>
         /// User secret to sign requests (if nohttps used)
         /// </summary>
-        public string Secret = null;
+        public string Secret;
 
         /// <summary>
         /// If user sets "Always use HTTPS" setting in his profile, it will be true
         /// </summary>
-        public bool IsHttpsRequired = false;
+        public bool IsHttpsRequired;
 
         /// <summary>
         /// Indicates time of token creation
         /// </summary>
-        public long Created = 0;
+        public long Created;
 
         /// <summary>
         /// Save token into Isolated Storage with key
         /// </summary>
         /// <param name="tokenKey">Your key for saving settings</param>
-        public void SaveTokenToIsolatedStorage(string tokenKey)
-        {
-#if SILVERLIGHT
-            var iso = IsolatedStorageSettings.ApplicationSettings;
-            
-            var tokenData = SerializeTokenData();
-
-            iso[tokenKey] = tokenData;
-
-            iso.Save();
-#else
-
-            Windows.Storage.ApplicationData.Current.LocalSettings.Values[tokenKey] = SerializeTokenData();
-#endif
-        }
+        public void SaveTokenToIsolatedStorage(string tokenKey) => Windows.Storage.ApplicationData.Current.LocalSettings.Values[tokenKey] = SerializeTokenData();
 
         /// <summary>
         /// Removes token from Isolated Storage with specified key
         /// </summary>
         /// <param name="tokenKey">Your key for saving settings</param>
-        public static void RemoveTokenInIsolatedStorage(string tokenKey)
-        {
-#if SILVERLIGHT
-            var iso = IsolatedStorageSettings.ApplicationSettings;
-            iso.Remove(tokenKey);
-#else
-            Windows.Storage.ApplicationData.Current.LocalSettings.Values.Remove(tokenKey);
-#endif
-        }
-
+        public static void RemoveTokenInIsolatedStorage(string tokenKey) => Windows.Storage.ApplicationData.Current.LocalSettings.Values.Remove(tokenKey);
 
         /// <summary>
         /// Serialize token into string
@@ -103,10 +76,6 @@ namespace VK.WindowsPhone.SDK
                 args.Add(HTTPS_REQUIRED, "1");
 
             return VKUtil.JoinParams(args);
-        }
-
-        public VKAccessToken()
-        {
         }
 
         /// <summary>
@@ -170,23 +139,12 @@ namespace VK.WindowsPhone.SDK
         /// <returns>Previously saved token or null</returns>
         public static VKAccessToken TokenFromIsolatedStorage(string tokenKey)
         {
-#if SILVERLIGHT
-            var iso = IsolatedStorageSettings.ApplicationSettings;
-            if (!iso.Contains(tokenKey)) return null;
-
-            String tokenString = iso[tokenKey].ToString();
-
-            return FromUrlString(tokenString);
-#else
             if (!Windows.Storage.ApplicationData.Current.LocalSettings.Values.ContainsKey(tokenKey))
-            {
                 return null;
-            }
 
-            string tokenString = Windows.Storage.ApplicationData.Current.LocalSettings.Values[tokenKey].ToString();
+            var tokenString = Windows.Storage.ApplicationData.Current.LocalSettings.Values[tokenKey].ToString();
 
             return FromUrlString(tokenString);
-#endif
         }
 
         /// <summary>
@@ -198,7 +156,7 @@ namespace VK.WindowsPhone.SDK
         {
             try
             {
-                string data = VKUtil.FileToString(filename);
+                var data = VKUtil.FileToString(filename);
                 return FromUrlString(data);
             }
             catch
@@ -211,9 +169,6 @@ namespace VK.WindowsPhone.SDK
         /// Checks token expiration time
         /// </summary>
         /// <returns>true if token has expired</returns>
-        public bool IsExpired
-        {
-            get { return ExpiresIn > 0 && ExpiresIn * 1000 + Created < VKUtil.CurrentTimeMillis(); }
-        }
+        public bool IsExpired => ExpiresIn > 0 && ExpiresIn * 1000 + Created < VKUtil.CurrentTimeMillis();
     }
 }

@@ -1,19 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-#if SILVERLIGHT
-
-using System.IO.IsolatedStorage;
-using Microsoft.Phone.Controls;
-
-#else
-
+using System.Linq;
 using Windows.Storage;
 using System.Threading.Tasks;
-using Windows.Web.Http;
-
-#endif
-
 using System.Net;
 
 
@@ -31,30 +20,23 @@ namespace VK.WindowsPhone.SDK.Util
             var keyValuePairs = queryString.Split('&');
             var parameters = new Dictionary<string, string>(keyValuePairs.Length);
 
-            foreach (var keyValueString in keyValuePairs)
-            {
-                var keyValueArray = keyValueString.Split('=');
-                if (keyValueArray.Length == 2)
-                {
-                    parameters.Add(keyValueArray[0], keyValueArray[1]);
-                }
-            }
+            foreach (var keyValueArray in keyValuePairs.Select(keyValueString => keyValueString.Split('=')).Where(keyValueArray => keyValueArray.Length == 2))
+                parameters.Add(keyValueArray[0], keyValueArray[1]);
 
             return parameters;
         }
 
         public static string GetParamsOfQueryString(string queryString)
         {
-            int indOfQ = queryString.IndexOf('?');
+            var indOfQ = queryString.IndexOf('?');
 
             if (indOfQ >= 0 && indOfQ < queryString.Length - 1)
             {
                 var paramsString = queryString.Substring(indOfQ + 1);
-
                 return paramsString;
             }
 
-            return "";
+            return string.Empty;
         }
 
         /// <summary>
@@ -72,13 +54,7 @@ namespace VK.WindowsPhone.SDK.Util
         public static string JoinParams(Dictionary<string, object> queryArgs, bool isUri = false)
         {
             var args = new List<string>(queryArgs.Count);
-            foreach (var entry in queryArgs)
-            {
-                var value = entry.Value;
-
-                args.Add(string.Format("{0}={1}", entry.Key, isUri ? WebUtility.UrlEncode(value.ToString()) : value.ToString()));
-            }
-
+            args.AddRange(from entry in queryArgs let value = entry.Value select string.Format("{0}={1}", entry.Key, isUri ? WebUtility.UrlEncode(value.ToString()) : value.ToString()));
             return string.Join("&", args);
         }
 
@@ -86,17 +62,13 @@ namespace VK.WindowsPhone.SDK.Util
         public static Dictionary<string, string> DictionaryFrom(params string[] args)
         {
             if (args.Length % 2 != 0)
-            {
                 throw new Exception("Args must be paired. Last one is ignored");
-            }
 
             var result = new Dictionary<string, string>();
-            for (int i = 0; i + 1 < args.Length; i += 2)
+            for (var i = 0; i + 1 < args.Length; i += 2)
             {
                 if (!string.IsNullOrEmpty(args[i + 1]))
-                {
                     result.Add((string)args[i], args[i + 1]);
-                }
             }
 
             return result;
@@ -109,35 +81,16 @@ namespace VK.WindowsPhone.SDK.Util
         /// <returns>Contents of file</returns>
         public static string FileToString(string filename)
         {
-#if SILVERLIGHT
-
-            String text;
-
-            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (!iso.FileExists(filename))
-                    return null;
-
-                var reader = new StreamReader(new IsolatedStorageFileStream(filename, FileMode.Open, iso));
-                text = reader.ReadToEnd();
-                reader.Close();
-            }
-
-            return text;
-#else
-       
-            string text = "";
+            var text = string.Empty;
 
             Task.Run(async () =>
                 {
-                    var file = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(filename);
-                    text = await Windows.Storage.FileIO.ReadTextAsync(file);
+                    var file = await ApplicationData.Current.LocalFolder.GetFileAsync(filename);
+                    text = await FileIO.ReadTextAsync(file);
                 })
                 .Wait();
 
             return text;
-
-#endif
         }
 
         /// <summary>
@@ -147,28 +100,13 @@ namespace VK.WindowsPhone.SDK.Util
         /// <param name="stringToWrite">String to save</param>
         public static void StringToFile(string filename, string stringToWrite)
         {
-#if SILVERLIGHT
-            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                using (IsolatedStorageFileStream file = iso.OpenFile(filename, FileMode.Create, FileAccess.Write))
-                {
-                    using (StreamWriter writer = new StreamWriter(file))
-                    {
-                        writer.WriteLineAsync(stringToWrite);
-                    }
-                }
-            }
-#else
-
             Task.Run(async () =>
                 {
                     var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 
-                    await Windows.Storage.FileIO.WriteTextAsync(file, stringToWrite);
+                    await FileIO.WriteTextAsync(file, stringToWrite);
 
                 }).Wait();
-#endif
-
         }
 
         private static readonly DateTime Jan1St1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -176,36 +114,19 @@ namespace VK.WindowsPhone.SDK.Util
         /// Helper method to retreive current time from Jan 1st 1970 in milliseconds.
         /// </summary>
         /// <returns>Current time from Jan 1st 1970 in milliseconds</returns>
-        public static long CurrentTimeMillis()
-        {
-            return (long)(DateTime.UtcNow - Jan1St1970).TotalMilliseconds;
-        }
-
+        public static long CurrentTimeMillis() => (long)(DateTime.UtcNow - Jan1St1970).TotalMilliseconds;
 
         public static void ClearCookies()
         {
-#if SILVERLIGHT
-
-            var webBrowser = new WebBrowser();
-
-            webBrowser.ClearCookiesAsync();
-
-#else
-
-            Windows.Web.Http.Filters.HttpBaseProtocolFilter myFilter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter();
+            var myFilter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter();
             var cookieManager = myFilter.CookieManager;
-            HttpCookieCollection myCookieJar = cookieManager.GetCookies(new Uri("https://vk.com"));
-            foreach (HttpCookie cookie in myCookieJar)
-            {
+            var myCookieJar = cookieManager.GetCookies(new Uri("https://vk.com"));
+            foreach (var cookie in myCookieJar)
                 cookieManager.DeleteCookie(cookie);
-            }
 
             myCookieJar = cookieManager.GetCookies(new Uri("https://login.vk.com"));
-            foreach (HttpCookie cookie in myCookieJar)
-            {
+            foreach (var cookie in myCookieJar)
                 cookieManager.DeleteCookie(cookie);
-            }
-#endif
         }
     }
 }
