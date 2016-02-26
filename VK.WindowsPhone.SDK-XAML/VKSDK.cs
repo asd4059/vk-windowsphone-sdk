@@ -33,9 +33,7 @@ namespace VK.WindowsPhone.SDK
         /// </summary>
         private const string VKSDK_ACCESS_TOKEN_ISOLATEDSTORAGE_KEY = "VKSDK_ACCESS_TOKEN_DONTTOUCH";
 
-        private const string VK_NAVIGATE_STR_FRM = "/VK.WindowsPhone.SDK;component/Pages/VKLoginPage.xaml?Scopes={0}&Revoke={1}";
-
-        internal static readonly string VK_AUTH_STR_FRM = "https://oauth.vk.com/authorize?client_id={0}&scope={1}&redirect_uri={2}&display=mobile&v={3}&response_type=token&revoke={4}";
+        internal const string VK_AUTH_STR_FRM = "https://oauth.vk.com/authorize?client_id={0}&scope={1}&redirect_uri={2}&display=mobile&v={3}&response_type=token&revoke={4}";
 
         /// <summary>
         /// Your VK app ID. 
@@ -126,8 +124,7 @@ namespace VK.WindowsPhone.SDK
         /// <param name="scopeList">List of permissions for your app</param>
         /// <param name="revoke">If true user will be allowed to logout and change user</param>
         /// <param name="forceOAuth">SDK will use only OAuth authorization via WebBrowser</param>
-        public static void Authorize(List<string> scopeList, bool revoke = false, bool forceOAuth = false,
-            LoginType loginType = LoginType.WebView)
+        public static void Authorize(List<string> scopeList, bool revoke = false, bool forceOAuth = false, LoginType loginType = LoginType.WebView)
         {
             try
             {
@@ -173,7 +170,7 @@ namespace VK.WindowsPhone.SDK
 
         private static void AuthorizeVKApp(List<string> scopeList, bool revoke)
         {
-            VKAppLaunchAuthorizationHelper.AuthorizeVKApp("", VKSDK.Instance.CurrentAppID, scopeList, revoke);
+            VKAppLaunchAuthorizationHelper.AuthorizeVKApp("", Instance.CurrentAppID, scopeList, revoke);
         }
 
         private enum CheckTokenResult
@@ -207,20 +204,12 @@ namespace VK.WindowsPhone.SDK
             var token = VKAccessToken.TokenFromParameters(tokenParams);
             if (token?.AccessToken == null)
             {
-                if (tokenParams.ContainsKey(VKAccessToken.SUCCESS))
-                    return CheckTokenResult.Success;
+                return tokenParams.ContainsKey(VKAccessToken.SUCCESS) ? CheckTokenResult.Success : CheckTokenResult.Error;
 
-                var error = new VKError { error_code = (int)VKResultCode.UserAuthorizationFailed };
-
-                return CheckTokenResult.Error;
+                //var error = new VKError { error_code = (int)VKResultCode.UserAuthorizationFailed };
             }
-            else
-            {
-                SetAccessToken(token, isTokenBeingRenewed);
-                return CheckTokenResult.Success;
-            }
-
-
+            SetAccessToken(token, isTokenBeingRenewed);
+            return CheckTokenResult.Success;
         }
 
         /// <summary>
@@ -266,10 +255,7 @@ namespace VK.WindowsPhone.SDK
         /// Notify SDK that user denied login
         /// </summary>
         /// <param name="error">Description of error while authorizing user</param>
-        public static void SetAccessTokenError(VKError error)
-        {
-            AccessDenied(null, new VKAccessDeniedEventArgs { AuthorizationError = error });
-        }
+        public static void SetAccessTokenError(VKError error) => AccessDenied(null, new VKAccessDeniedEventArgs { AuthorizationError = error });
 
         private static bool PerformTokenCheck(VKAccessToken token, bool isUserDefinedToken = false)
         {
@@ -339,16 +325,14 @@ namespace VK.WindowsPhone.SDK
                 {
                     var checkUserInstallRequest = new VKRequest("apps.checkUserInstall", "platform", PLATFORM_ID, "app_id", appId.ToString(), "device_id", DeviceId);
 
-                    checkUserInstallRequest.Dispatch<object>((res) =>
+                    checkUserInstallRequest.Dispatch<object>(res =>
                     {
                         int responseVal;
 
                         if (res.Data != null && int.TryParse(res.Data.ToString(), out responseVal))
                         {
                             if (responseVal == 1)
-                            {
                                 MobileCatalogInstallationDetected?.Invoke(null, EventArgs.Empty);
-                            }
                         }
                     });                
                 }

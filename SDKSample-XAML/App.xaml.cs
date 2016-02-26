@@ -1,10 +1,10 @@
 ﻿using System;
-using VK.WindowsPhone.SDK_XAML;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using VK.WindowsPhone.SDK;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 

@@ -17,31 +17,27 @@ namespace VK.WindowsPhone.SDK.API
      
     public class VKRequest
     {
-        class ErrorRoot
+        public class ErrorRoot
         {
             public VKError error { get; set; }
         }
 
         private VKRequestParameters _parameters;
-      
-        private static readonly string REQUEST_BASE_URI_FRM = "https://api.vk.com/method/{0}";
 
-        private static readonly string ERROR_PREFIX_GENERAL = @"{""error"":{";
+        private const string REQUEST_BASE_URI_FRM = "https://api.vk.com/method/{0}";
 
-        private static IVKLogger Logger
-        {
-            get { return VKSDK.Logger; }
-        }
+        private const string ERROR_PREFIX_GENERAL = @"{""error"":{";
+
+        private static IVKLogger Logger => VKSDK.Logger;
 
 
-     
         public static VKRequest Dispatch<T>(VKRequestParameters parameters,
             Action<VKBackendResult<T>> callback,
             Func<string, T> customDeserializationFunc = null)
         {
             var request = new VKRequest(parameters);
 
-            request.Dispatch<T>(callback, customDeserializationFunc);
+            request.Dispatch(callback, customDeserializationFunc);
 
             return request;
         }
@@ -60,9 +56,7 @@ namespace VK.WindowsPhone.SDK.API
         private void InitializeWith(VKRequestParameters parameters)
         {
             if (parameters == null)
-            {
-                throw new ArgumentNullException("parameters");
-            }
+                throw new ArgumentNullException(nameof(parameters));
 
             _parameters = parameters;
         }
@@ -72,7 +66,7 @@ namespace VK.WindowsPhone.SDK.API
                 var tc = new TaskCompletionSource<VKBackendResult<T>>();
 
                 Dispatch(
-                    (res) =>
+                    res =>
                     {
                         tc.TrySetResult(res);
                     },
@@ -87,21 +81,11 @@ namespace VK.WindowsPhone.SDK.API
             Func<string, T> customDeserializationFunc = null)
         {
             if (callback == null)
-            {
-                throw new ArgumentNullException("callback");
-            }
+                throw new ArgumentNullException(nameof(callback));
 
-            Dictionary<string, string> parametersDict = null;
-            if (_parameters.Parameters != null)
-            {
-                parametersDict = new Dictionary<string, string>(_parameters.Parameters);
-            }
-            else
-            {
-                parametersDict = new Dictionary<string, string>();
-            }
+            var parametersDict = _parameters.Parameters != null ? new Dictionary<string, string>(_parameters.Parameters) : new Dictionary<string, string>();
 
-            DoDispatch<T>(
+            DoDispatch(
                 parametersDict,
                 callback,
                 customDeserializationFunc);
@@ -114,33 +98,26 @@ namespace VK.WindowsPhone.SDK.API
         {
 
             if (!parametersDict.ContainsKey("v"))
-            {
                 parametersDict["v"] = VKSDK.API_VERSION;
-            }
 
             var accessToken = VKSDK.GetAccessToken();
 
             if (accessToken != null)
-            {
                 parametersDict["access_token"] = accessToken.AccessToken;
-            }
 
             var dispatchUri = string.Format(REQUEST_BASE_URI_FRM, _parameters.MethodName);
 
             VKHttpRequestHelper.DispatchHTTPRequest(
                 dispatchUri,
                 parametersDict,
-                (httpResult) =>
+                httpResult =>
                 {
                     if (httpResult.IsSucceeded)
                     {
-                        var backendResult = GetBackendResultFromString<T>(httpResult.Data, customDeserializationFunc);
+                        var backendResult = GetBackendResultFromString(httpResult.Data, customDeserializationFunc);
 
-                        if (backendResult.ResultCode == VKResultCode.UserAuthorizationFailed &&
-                            accessToken != null)
-                        {
-                            VKSDK.SetAccessTokenError(new VKError { error_code = (int)VKResultCode.UserAuthorizationFailed });
-                        }                                              
+                        if (backendResult.ResultCode == VKResultCode.UserAuthorizationFailed && accessToken != null)
+                            VKSDK.SetAccessTokenError(new VKError { error_code = (int)VKResultCode.UserAuthorizationFailed });                                          
                         else if (backendResult.ResultCode == VKResultCode.CaptchaRequired)
                         {
                             var captchaRequest = new VKCaptchaUserRequest
@@ -150,23 +127,23 @@ namespace VK.WindowsPhone.SDK.API
                             };
 
                             VKSDK.InvokeCaptchaRequest(captchaRequest,
-                                (captchaResponse) =>
+                                captchaResponse =>
                                 {
                                     if (!captchaResponse.IsCancelled)
                                     {
-                                        var parametersWithCaptcha = new Dictionary<string, string>(parametersDict);
+                                        var parametersWithCaptcha = new Dictionary<string, string>(parametersDict)
+                                        {
+                                            ["captcha_sid"] = captchaResponse.Request.CaptchaSid,
+                                            ["captcha_key"] = captchaResponse.EnteredString
+                                        };
 
-                                        parametersWithCaptcha["captcha_sid"] = captchaResponse.Request.CaptchaSid;
-                                        parametersWithCaptcha["captcha_key"] = captchaResponse.EnteredString;
 
                                         DoDispatch(parametersWithCaptcha,
                                             callback,
                                             customDeserializationFunc);
                                     }
                                     else
-                                    {
-                                        InvokeSafely(() => callback(new VKBackendResult<T>() { ResultCode = VKResultCode.CaptchaControlCancelled }));                                        
-                                    }
+                                        InvokeSafely(() => callback(new VKBackendResult<T> { ResultCode = VKResultCode.CaptchaControlCancelled }));                                        
                                 });
 
                         }
@@ -178,16 +155,12 @@ namespace VK.WindowsPhone.SDK.API
                             };
 
                             VKSDK.InvokeValidationRequest(validationRequest,
-                                (vr) =>
+                                vr =>
                                 {
                                     if (vr.IsSucceeded)
-                                    {
                                         DoDispatch(parametersDict, callback, customDeserializationFunc);
-                                    }
                                     else
-                                    {
                                         InvokeSafely(() => callback(new VKBackendResult<T> { ResultCode = VKResultCode.ValidationCanceslledOrFailed }));
-                                    }
                                 });
                         }
                         else
@@ -203,7 +176,7 @@ namespace VK.WindowsPhone.SDK.API
                 });
         }
 
-        private void InvokeSafely(Action action)
+        private static void InvokeSafely(Action action)
         {
             try
             {
@@ -214,10 +187,9 @@ namespace VK.WindowsPhone.SDK.API
             }
         }
 
-        private VKBackendResult<T> GetBackendResultFromString<T>(string dataString, Func<string, T> customDeserializationFunc)
-        {                    
-            var result = new VKBackendResult<T>();
-            result.ResultString = dataString;
+        private static VKBackendResult<T> GetBackendResultFromString<T>(string dataString, Func<string, T> customDeserializationFunc)
+        {
+            var result = new VKBackendResult<T> {ResultString = dataString};
 
             if (dataString.StartsWith(ERROR_PREFIX_GENERAL))
             {
@@ -225,9 +197,8 @@ namespace VK.WindowsPhone.SDK.API
                 {
                     result.Error = JsonConvert.DeserializeObject<ErrorRoot>(dataString).error;
 
-                    VKResultCode resultCode = VKResultCode.UnknownError;
-
-                    if (Enum.TryParse<VKResultCode>(result.Error.error_code.ToString(), out resultCode))
+                    VKResultCode resultCode;
+                    if (Enum.TryParse(result.Error.error_code.ToString(), out resultCode))
                     {
                         result.ResultCode = resultCode;
                     }
