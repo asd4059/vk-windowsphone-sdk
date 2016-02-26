@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VK.WindowsPhone.SDK", "VK.WindowsPhone.SDK\VK.WindowsPhone.SDK.csproj", "{E700A31E-1BB7-4231-8790-91A75649009B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VK.WindowsPhone.SDK-XAML", "VK.WindowsPhone.SDK-XAML\VK.WindowsPhone.SDK-XAML.csproj", "{A7E0FC88-A513-4981-8C2A-0106045E695B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDKSample-XAML", "SDKSample-XAML\SDKSample-XAML.csproj", "{94AAA208-39D6-4B25-89BD-D42FDFB5D180}"
@@ -19,18 +17,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E700A31E-1BB7-4231-8790-91A75649009B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E700A31E-1BB7-4231-8790-91A75649009B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E700A31E-1BB7-4231-8790-91A75649009B}.Debug|ARM.ActiveCfg = Debug|ARM
-		{E700A31E-1BB7-4231-8790-91A75649009B}.Debug|ARM.Build.0 = Debug|ARM
-		{E700A31E-1BB7-4231-8790-91A75649009B}.Debug|x86.ActiveCfg = Debug|x86
-		{E700A31E-1BB7-4231-8790-91A75649009B}.Debug|x86.Build.0 = Debug|x86
-		{E700A31E-1BB7-4231-8790-91A75649009B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E700A31E-1BB7-4231-8790-91A75649009B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E700A31E-1BB7-4231-8790-91A75649009B}.Release|ARM.ActiveCfg = Release|ARM
-		{E700A31E-1BB7-4231-8790-91A75649009B}.Release|ARM.Build.0 = Release|ARM
-		{E700A31E-1BB7-4231-8790-91A75649009B}.Release|x86.ActiveCfg = Release|x86
-		{E700A31E-1BB7-4231-8790-91A75649009B}.Release|x86.Build.0 = Release|x86
 		{A7E0FC88-A513-4981-8C2A-0106045E695B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A7E0FC88-A513-4981-8C2A-0106045E695B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7E0FC88-A513-4981-8C2A-0106045E695B}.Debug|ARM.ActiveCfg = Debug|Any CPU
