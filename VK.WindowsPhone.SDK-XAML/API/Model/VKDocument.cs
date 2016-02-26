@@ -20,5 +20,11 @@ namespace VK.WindowsPhone.SDK.API.Model
 
         public string photo_100 { get; set; }
         public string photo_130 { get; set; }
+
+        public long date { get; set; }
+        public int type { get; set; }
+
+        //Ver 5.44
+        public string preview { get; set; }
     }
 }

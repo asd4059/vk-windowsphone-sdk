@@ -123,11 +123,20 @@
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKAlbum.cs">
       <Link>API\Model\VKAlbum.cs</Link>
     </Compile>
+    <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKApp.cs">
+      <Link>API\Model\VKApp.cs</Link>
+    </Compile>
+    <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKApplication.cs">
+      <Link>API\Model\VKApplication.cs</Link>
+    </Compile>
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKAttachment.cs">
       <Link>API\Model\VKAttachment.cs</Link>
     </Compile>
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKAudio.cs">
       <Link>API\Model\VKAudio.cs</Link>
+    </Compile>
+    <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKButton.cs">
+      <Link>API\Model\VKButton.cs</Link>
     </Compile>
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKChat.cs">
       <Link>API\Model\VKChat.cs</Link>
@@ -141,11 +150,20 @@
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKCountry.cs">
       <Link>API\Model\VKCountry.cs</Link>
     </Compile>
+    <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKCurrency.cs">
+      <Link>API\Model\VKCurrency.cs</Link>
+    </Compile>
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKDocument.cs">
       <Link>API\Model\VKDocument.cs</Link>
     </Compile>
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKGeo.cs">
       <Link>API\Model\VKGeo.cs</Link>
+    </Compile>
+    <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKGift.cs">
+      <Link>API\Model\VKGift.cs</Link>
+    </Compile>
+    <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKGiftItem.cs">
+      <Link>API\Model\VKGiftItem.cs</Link>
     </Compile>
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKGroup.cs">
       <Link>API\Model\VKGroup.cs</Link>
@@ -174,8 +192,20 @@
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKPoll.cs">
       <Link>API\Model\VKPoll.cs</Link>
     </Compile>
+    <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKPrice.cs">
+      <Link>API\Model\VKPrice.cs</Link>
+    </Compile>
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKPrivacy.cs">
       <Link>API\Model\VKPrivacy.cs</Link>
+    </Compile>
+    <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKProduct.cs">
+      <Link>API\Model\VKProduct.cs</Link>
+    </Compile>
+    <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKRating.cs">
+      <Link>API\Model\VKRating.cs</Link>
+    </Compile>
+    <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKStore.cs">
+      <Link>API\Model\VKStore.cs</Link>
     </Compile>
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Model\VKUser.cs">
       <Link>API\Model\VKUser.cs</Link>

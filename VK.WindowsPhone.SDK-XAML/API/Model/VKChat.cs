@@ -5,11 +5,8 @@ namespace VK.WindowsPhone.SDK.API.Model
 {
     public class VKChat
     {
-        public string type { get; set; }
-    
-
         public long id { get; set; }
-
+        public string type { get; set; }
         private string _title = "";
         public string title
         {
@@ -19,8 +16,9 @@ namespace VK.WindowsPhone.SDK.API.Model
         public long admin_id { get; set; }
         public List<long> users { get; set; }
 
+        // TODO Удалить
         public string photo_100 { get; set; }
-
+        // TODO Удалить
         public string photo_200 { get; set; }
     }
 }
