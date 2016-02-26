@@ -1,6 +1,5 @@
 ﻿    using System;
-using System.Collections.Generic;
-using System.Windows;
+    using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using VK.WindowsPhone.SDK.API;
@@ -10,7 +9,7 @@ namespace VK.WindowsPhone.SDK.Pages
 {
     public partial class VKLoginPage
     {    
-        private const String REDIRECT_URL = "https://oauth.vk.com/blank.html";
+        private const string REDIRECT_URL = "https://oauth.vk.com/blank.html";
 
         private bool _isInitialized = false;
 
@@ -49,7 +48,7 @@ namespace VK.WindowsPhone.SDK.Pages
                 {
                     _scopes = NavigationContext.QueryString["Scopes"];
 
-                    _revoke = NavigationContext.QueryString["Revoke"] == Boolean.TrueString;
+                    _revoke = NavigationContext.QueryString["Revoke"] == bool.TrueString;
                 }
 
                 InitializeWebBrowser();

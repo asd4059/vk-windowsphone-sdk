@@ -1,37 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace VK.WindowsPhone.SDK
 {
     public class VKScope
     {
-        public const String NOTIFY = "notify";
-        public const String FRIENDS = "friends";
-        public const String PHOTOS = "photos";
-        public const String AUDIO = "audio";
-        public const String VIDEO = "video";
-        public const String DOCS = "docs";
-        public const String NOTES = "notes";
-        public const String PAGES = "pages";
-        public const String STATUS = "status";
-        public const String WALL = "wall";
-        public const String GROUPS = "groups";
-        public const String MESSAGES = "messages";
-        public const String NOTIFICATIONS = "notifications";
-        public const String STATS = "stats";
-        public const String ADS = "ads";
-        public const String OFFLINE = "offline";
-        public const String NOHTTPS = "nohttps";
-        public const String DIRECT = "direct";
+        public const string NOTIFY = "notify";
+        public const string FRIENDS = "friends";
+        public const string PHOTOS = "photos";
+        public const string AUDIO = "audio";
+        public const string VIDEO = "video";
+        public const string DOCS = "docs";
+        public const string NOTES = "notes";
+        public const string PAGES = "pages";
+        public const string STATUS = "status";
+        public const string WALL = "wall";
+        public const string GROUPS = "groups";
+        public const string MESSAGES = "messages";
+        public const string NOTIFICATIONS = "notifications";
+        public const string STATS = "stats";
+        public const string ADS = "ads";
+        public const string OFFLINE = "offline";
+        public const string NOHTTPS = "nohttps";
+        public const string DIRECT = "direct";
 
         /// <summary>
         /// Converts integer permissions value into List of constants
         /// </summary>
         /// <param name="permissionsValue">Integer permissons value</param>
         /// <returns>List containing constant strings of permissions (scope)</returns>
-        public static List<String> ParseVKPermissionsFromInteger(int permissionsValue)
+        public static List<string> ParseVKPermissionsFromInteger(int permissionsValue)
         {
-            var res = new List<String>();
+            var res = new List<string>();
             if ((permissionsValue & 1) > 0) res.Add(NOTIFY);
             if ((permissionsValue & 2) > 0) res.Add(FRIENDS);
             if ((permissionsValue & 4) > 0) res.Add(PHOTOS);

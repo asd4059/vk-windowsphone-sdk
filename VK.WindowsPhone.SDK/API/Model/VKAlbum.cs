@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VK.WindowsPhone.SDK.Util;
+﻿using VK.WindowsPhone.SDK.Util;
 
 namespace VK.WindowsPhone.SDK.API.Model
 {
-    public partial class VKAlbum
+    public class VKAlbum
     {
-
         public string id { get; set; }
 
         public string thumb_id { get; set; }
@@ -20,10 +14,7 @@ namespace VK.WindowsPhone.SDK.API.Model
         public string title
         {
             get { return _title; }
-            set
-            {
-                _title = (value ?? "").ForUI();
-            }
+            set { _title = (value ?? "").ForUI(); }
         }
 
 

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
@@ -94,9 +91,9 @@ namespace SDKSample_XAML
         /// <returns>An asynchronous task that reflects when session state has been read.  The
         /// content of <see cref="SessionState"/> should not be relied upon until this task
         /// completes.</returns>
-        public static async Task RestoreAsync(String sessionBaseKey = null)
+        public static async Task RestoreAsync(string sessionBaseKey = null)
         {
-            _sessionState = new Dictionary<String, Object>();
+            _sessionState = new Dictionary<string, object>();
 
             try
             {
@@ -127,11 +124,11 @@ namespace SDKSample_XAML
         }
 
         private static DependencyProperty FrameSessionStateKeyProperty =
-            DependencyProperty.RegisterAttached("_FrameSessionStateKey", typeof(String), typeof(SuspensionManager), null);
+            DependencyProperty.RegisterAttached("_FrameSessionStateKey", typeof(string), typeof(SuspensionManager), null);
         private static DependencyProperty FrameSessionBaseKeyProperty =
-            DependencyProperty.RegisterAttached("_FrameSessionBaseKeyParams", typeof(String), typeof(SuspensionManager), null);
+            DependencyProperty.RegisterAttached("_FrameSessionBaseKeyParams", typeof(string), typeof(SuspensionManager), null);
         private static DependencyProperty FrameSessionStateProperty =
-            DependencyProperty.RegisterAttached("_FrameSessionState", typeof(Dictionary<String, Object>), typeof(SuspensionManager), null);
+            DependencyProperty.RegisterAttached("_FrameSessionState", typeof(Dictionary<string, object>), typeof(SuspensionManager), null);
         private static List<WeakReference<Frame>> _registeredFrames = new List<WeakReference<Frame>>();
 
         /// <summary>
@@ -148,7 +145,7 @@ namespace SDKSample_XAML
         /// store navigation-related information.</param>
         /// <param name="sessionBaseKey">An optional key that identifies the type of session.
         /// This can be used to distinguish between multiple application launch scenarios.</param>
-        public static void RegisterFrame(Frame frame, String sessionStateKey, String sessionBaseKey = null)
+        public static void RegisterFrame(Frame frame, string sessionStateKey, string sessionBaseKey = null)
         {
             if (frame.GetValue(FrameSessionStateKeyProperty) != null)
             {
@@ -186,7 +183,7 @@ namespace SDKSample_XAML
         {
             // Remove session state and remove the frame from the list of frames whose navigation
             // state will be saved (along with any weak references that are no longer reachable)
-            SessionState.Remove((String)frame.GetValue(FrameSessionStateKeyProperty));
+            SessionState.Remove((string)frame.GetValue(FrameSessionStateKeyProperty));
             _registeredFrames.RemoveAll((weakFrameReference) =>
             {
                 Frame testFrame;
@@ -207,26 +204,26 @@ namespace SDKSample_XAML
         /// <param name="frame">The instance for which session state is desired.</param>
         /// <returns>A collection of state subject to the same serialization mechanism as
         /// <see cref="SessionState"/>.</returns>
-        public static Dictionary<String, Object> SessionStateForFrame(Frame frame)
+        public static Dictionary<string, object> SessionStateForFrame(Frame frame)
         {
-            var frameState = (Dictionary<String, Object>)frame.GetValue(FrameSessionStateProperty);
+            var frameState = (Dictionary<string, object>)frame.GetValue(FrameSessionStateProperty);
 
             if (frameState == null)
             {
-                var frameSessionKey = (String)frame.GetValue(FrameSessionStateKeyProperty);
+                var frameSessionKey = (string)frame.GetValue(FrameSessionStateKeyProperty);
                 if (frameSessionKey != null)
                 {
                     // Registered frames reflect the corresponding session state
                     if (!_sessionState.ContainsKey(frameSessionKey))
                     {
-                        _sessionState[frameSessionKey] = new Dictionary<String, Object>();
+                        _sessionState[frameSessionKey] = new Dictionary<string, object>();
                     }
-                    frameState = (Dictionary<String, Object>)_sessionState[frameSessionKey];
+                    frameState = (Dictionary<string, object>)_sessionState[frameSessionKey];
                 }
                 else
                 {
                     // Frames that aren't registered have transient state
-                    frameState = new Dictionary<String, Object>();
+                    frameState = new Dictionary<string, object>();
                 }
                 frame.SetValue(FrameSessionStateProperty, frameState);
             }
@@ -238,7 +235,7 @@ namespace SDKSample_XAML
             var frameState = SessionStateForFrame(frame);
             if (frameState.ContainsKey("Navigation"))
             {
-                frame.SetNavigationState((String)frameState["Navigation"]);
+                frame.SetNavigationState((string)frameState["Navigation"]);
             }
         }
 

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VK.WindowsPhone.SDK.Util;
+﻿using VK.WindowsPhone.SDK.Util;
 
 namespace VK.WindowsPhone.SDK.API.Model
 {
    /// <summary>
    /// https://vk.com/dev/fields_groups
    /// </summary>
-    public partial class VKGroup
+    public class VKGroup
     {
         public long id { get; set; }
 
@@ -46,65 +41,26 @@ namespace VK.WindowsPhone.SDK.API.Model
         public string description
         {
             get { return _desc; }
-            set
-            {
-                _desc = (value ?? "").ForUI();
-            }
+            set { _desc = (value ?? "").ForUI(); }
         }
 
-        public string wiki_page
-        {
-            get;
-            set;
-        }
+        public string wiki_page { get; set; }
 
-        public int members_count
-        {
-            get;
-            set;
-        }
+        public int members_count { get; set; }
 
-        public VKCounters counters
-        {
-            get;
-            set;
-        }
+        public VKCounters counters { get; set; }
 
-        public long start_date
-        {
-            get;
-            set;
-        }
+        public long start_date { get; set; }
 
-        public long finish_date
-        {
-            get;
-            set;
-        }
+        public long finish_date { get; set; }
 
-        public int can_post
-        {
-            get;
-            set;
-        }
+        public int can_post { get; set; }
 
-        public int can_see_all_posts
-        {
-            get;
-            set;
-        }
+        public int can_see_all_posts { get; set; }
 
-        public int can_upload_doc
-        {
-            get;
-            set;
-        }
+        public int can_upload_doc { get; set; }
 
-        public int can_create_topic
-        {
-            get;
-            set;
-        }
+        public int can_create_topic { get; set; }
 
         public string activity { get; set; }
 

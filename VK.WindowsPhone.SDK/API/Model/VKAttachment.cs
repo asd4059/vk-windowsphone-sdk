@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VK.WindowsPhone.SDK.API.Model
+﻿namespace VK.WindowsPhone.SDK.API.Model
 {
-    public partial class VKAttachment
+    public class VKAttachment
     {
         public string type { get; set; }
 

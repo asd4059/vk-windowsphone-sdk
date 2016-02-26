@@ -1,26 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using VK.WindowsPhone.SDK;
 using VK.WindowsPhone.SDK.API;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using VK.WindowsPhone.SDK.Util;
 
 namespace VK.WindowsPhone.SDK.Pages
 {
     public sealed partial class VKLoginUserControl
     {
-        private const String REDIRECT_URL = "https://oauth.vk.com/blank.html";
+        private const string REDIRECT_URL = "https://oauth.vk.com/blank.html";
 
         private List<string> _scopes;
         private bool _revoke;

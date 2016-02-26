@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using VK.WindowsPhone.SDK.Util;
 
 namespace VK.WindowsPhone.SDK.API.Model
 {
-    public partial class VKComment
+    public class VKComment
     {
         public long id { get; set; }
 

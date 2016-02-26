@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-
 #if SILVERLIGHT
 
 using System.IO.IsolatedStorage;
@@ -12,14 +10,11 @@ using Microsoft.Phone.Controls;
 
 using Windows.Storage;
 using System.Threading.Tasks;
-using Windows.Storage.Streams;
-using Windows.UI.Xaml.Controls;
 using Windows.Web.Http;
 
 #endif
 
 using System.Net;
-using VK.WindowsPhone.SDK.API.Model;
 
 
 namespace VK.WindowsPhone.SDK.Util
@@ -31,10 +26,10 @@ namespace VK.WindowsPhone.SDK.Util
         /// </summary>
         /// <param name="queryString">string to explode</param>
         /// <returns>Key-value map of passed string</returns>
-        public static Dictionary<String, String> ExplodeQueryString(String queryString)
+        public static Dictionary<string, string> ExplodeQueryString(string queryString)
         {
             var keyValuePairs = queryString.Split('&');
-            var parameters = new Dictionary<String, String>(keyValuePairs.Length);
+            var parameters = new Dictionary<string, string>(keyValuePairs.Length);
 
             foreach (var keyValueString in keyValuePairs)
             {
@@ -74,33 +69,33 @@ namespace VK.WindowsPhone.SDK.Util
         /// <param name="queryArgs">Map to join</param>
         /// <param name="isUri">Indicates that value parameters must be url-encoded</param>
         /// <returns>Result query string, like k=v&k1=v=1</returns>
-        public static String JoinParams(Dictionary<String, Object> queryArgs, bool isUri = false)
+        public static string JoinParams(Dictionary<string, object> queryArgs, bool isUri = false)
         {
-            var args = new List<String>(queryArgs.Count);
+            var args = new List<string>(queryArgs.Count);
             foreach (var entry in queryArgs)
             {
                 var value = entry.Value;
 
-                args.Add(String.Format("{0}={1}", entry.Key, isUri ? WebUtility.UrlEncode(value.ToString()) : value.ToString()));
+                args.Add(string.Format("{0}={1}", entry.Key, isUri ? WebUtility.UrlEncode(value.ToString()) : value.ToString()));
             }
 
-            return String.Join("&", args);
+            return string.Join("&", args);
         }
 
 
-        public static Dictionary<String, string> DictionaryFrom(params string[] args)
+        public static Dictionary<string, string> DictionaryFrom(params string[] args)
         {
             if (args.Length % 2 != 0)
             {
                 throw new Exception("Args must be paired. Last one is ignored");
             }
 
-            var result = new Dictionary<String, string>();
+            var result = new Dictionary<string, string>();
             for (int i = 0; i + 1 < args.Length; i += 2)
             {
                 if (!string.IsNullOrEmpty(args[i + 1]))
                 {
-                    result.Add((String)args[i], args[i + 1]);
+                    result.Add((string)args[i], args[i + 1]);
                 }
             }
 
@@ -112,7 +107,7 @@ namespace VK.WindowsPhone.SDK.Util
         /// </summary>
         /// <param name="filename">File name in IsolatedStorage</param>
         /// <returns>Contents of file</returns>
-        public static String FileToString(String filename)
+        public static string FileToString(string filename)
         {
 #if SILVERLIGHT
 
@@ -131,7 +126,7 @@ namespace VK.WindowsPhone.SDK.Util
             return text;
 #else
        
-            String text = "";
+            string text = "";
 
             Task.Run(async () =>
                 {
@@ -150,7 +145,7 @@ namespace VK.WindowsPhone.SDK.Util
         /// </summary>
         /// <param name="filename">Filename in IsolatedStorage</param>
         /// <param name="stringToWrite">String to save</param>
-        public static void StringToFile(String filename, String stringToWrite)
+        public static void StringToFile(string filename, string stringToWrite)
         {
 #if SILVERLIGHT
             using (var iso = IsolatedStorageFile.GetUserStoreForApplication())

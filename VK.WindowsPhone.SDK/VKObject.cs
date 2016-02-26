@@ -30,7 +30,7 @@ namespace VK.WindowsPhone.SDK
         {
             while (true)
             {
-                var buffer = new byte[sizeof(Int64)];
+                var buffer = new byte[sizeof(long)];
                 Rand.NextBytes(buffer);
                 long nextRand = BitConverter.ToInt64(buffer, 0);
 

@@ -1,32 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VK.WindowsPhone.SDK.Util;
+﻿using VK.WindowsPhone.SDK.Util;
 
 namespace VK.WindowsPhone.SDK.API.Model
 {
-    public partial class Place
+    public class Place
     {
         private string _title = "";
         public string title
         {
             get { return _title; }
-            set
-            {
-                _title = (value ?? "").ForUI();
-            }
+            set { _title = (value ?? "").ForUI(); }
         }
 
         private string _address = "";
         public string address
         {
             get { return _address; }
-            set
-            {
-                _address = (value ?? "").ForUI();
-            }
+            set { _address = (value ?? "").ForUI(); }
         }
 
         public double latitude { get; set; }

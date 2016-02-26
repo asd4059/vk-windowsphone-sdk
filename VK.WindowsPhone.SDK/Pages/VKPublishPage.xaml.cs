@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
 using VK.WindowsPhone.SDK.Util;
 using VK.WindowsPhone.SDK.API;
 using VK.WindowsPhone.SDK.API.Model;
@@ -42,7 +37,7 @@ namespace VK.WindowsPhone.SDK.Pages
             InitializeComponent();
 
 
-            PrivacyIcon.Source = new BitmapImage(new Uri(String.Format("Assets/sdk-privacy{0}-WVGA.png", true ? "" : "-set"), UriKind.Relative));
+            PrivacyIcon.Source = new BitmapImage(new Uri(string.Format("Assets/sdk-privacy{0}-WVGA.png", true ? "" : "-set"), UriKind.Relative));
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

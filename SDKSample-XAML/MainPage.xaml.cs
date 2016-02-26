@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using VK.WindowsPhone.SDK;
 using VK.WindowsPhone.SDK.API;
 using VK.WindowsPhone.SDK.API.Model;
@@ -11,15 +9,9 @@ using VK.WindowsPhone.SDK.Util;
 using VK.WindowsPhone.SDK_XAML.Pages;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Store;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -32,7 +24,7 @@ namespace SDKSample_XAML
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private List<String> _scope = new List<string> { VKScope.FRIENDS, VKScope.WALL, VKScope.PHOTOS, VKScope.AUDIO };
+        private List<string> _scope = new List<string> { VKScope.FRIENDS, VKScope.WALL, VKScope.PHOTOS, VKScope.AUDIO };
 
         public MainPage()
         {
@@ -131,7 +123,7 @@ namespace SDKSample_XAML
         {
             var request = new VKRequest(new VKRequestParameters("captcha.force"));
 
-            request.Dispatch<Object>((res) => { }, (json) => new Object());
+            request.Dispatch<object>((res) => { }, (json) => new object());
         }
 
         private void GetUserInfoButton_Click(object sender, RoutedEventArgs e)

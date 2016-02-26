@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using VK.WindowsPhone.SDK.Util;
 
 namespace VK.WindowsPhone.SDK.API.Model
 {
-    public partial class VKPoll
+    public class VKPoll
     {
         public long id { get; set; }
 
@@ -20,14 +16,8 @@ namespace VK.WindowsPhone.SDK.API.Model
         private string _question = "";
         public string question
         {
-            get
-            {
-                return _question;
-            }
-            set
-            {
-                _question = (value ?? "").ForUI();
-            }
+            get { return _question; }
+            set { _question = (value ?? "").ForUI(); }
         }
 
         public int votes { get; set; }
@@ -37,12 +27,17 @@ namespace VK.WindowsPhone.SDK.API.Model
         public List<VKPollAnswer> answers { get; set; }
     }
 
-    public partial class VKPollAnswer
+    public class VKPollAnswer
     {
         public long id { get; set; }
 
         private string _text = "";
-        public string text { get { return _text; } set { _text = (value ?? "").ForUI(); } }
+
+        public string text
+        {
+            get { return _text; }
+            set { _text = (value ?? "").ForUI(); }
+        }
         public int votes { get; set; }
         public double rate { get; set; }
     }

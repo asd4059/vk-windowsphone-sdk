@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -66,7 +65,7 @@ namespace VK.WindowsPhone.SDK
             public static decimal ToDecimal(string value)
             {
                 decimal number;
-                value = new String(value.Where(c => char.IsPunctuation(c) || char.IsNumber(c)).ToArray());
+                value = new string(value.Where(c => char.IsPunctuation(c) || char.IsNumber(c)).ToArray());
                 string tempValue = value;
 
                 var punctuation = value.Where(x => char.IsPunctuation(x)).Distinct();
@@ -176,7 +175,7 @@ namespace VK.WindowsPhone.SDK
 
             while (!success && it < 3)
             {
-                var result = await vkSaveTransationRequest.DispatchAsync<Object>((jsonStr) => new Object());
+                var result = await vkSaveTransationRequest.DispatchAsync<object>((jsonStr) => new object());
 
                 success = result.ResultCode == VKResultCode.Succeeded;
 

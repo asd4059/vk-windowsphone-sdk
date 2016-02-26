@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 
 using System.Text;
-using System.Threading.Tasks;
 using VK.WindowsPhone.SDK.API;
 
 #if SILVERLIGHT
@@ -30,20 +29,19 @@ namespace VK.WindowsPhone.SDK.Util
 
     public static class VKHttpRequestHelper
     {
+        private const int BUFFER_SIZE = 5000;
 
-        const int BUFFER_SIZE = 5000;
-
-        class RequestState
+        private class RequestState
         {
             // This class stores the State of the request.           
             public StringBuilder requestData;
-            public List<byte> readBytes;
+            public readonly List<byte> readBytes;
             public byte[] BufferRead;
             public HttpWebRequest request;
             public HttpWebResponse response;
             public Stream streamResponse;
             public Action<VKHttpResult> resultCallback;
-            public DateTime startTime;
+            public readonly DateTime startTime;
             public bool httpError;
 
             public RequestState()
@@ -57,11 +55,7 @@ namespace VK.WindowsPhone.SDK.Util
             }
         }
 
-
-        private static IVKLogger Logger
-        {
-            get { return VKSDK.Logger; }
-        }
+        private static IVKLogger Logger => VKSDK.Logger;
 
         public static async void DispatchHTTPRequest(
             string baseUri,
@@ -161,18 +155,14 @@ namespace VK.WindowsPhone.SDK.Util
                 request.AllowWriteStreamBuffering = false;
                 rState.request = request;
                 request.Method = "POST";
-                string formDataBoundary = String.Format("----------{0:N}", Guid.NewGuid());
-                string contentType = "multipart/form-data; boundary=" + formDataBoundary;
+                var formDataBoundary = $"----------{Guid.NewGuid():N}";
+                var contentType = "multipart/form-data; boundary=" + formDataBoundary;
                 request.ContentType = contentType;
                 request.CookieContainer = new CookieContainer();
 
-                string header = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\";\r\nContent-Type: {3}\r\n\r\n",
-                               formDataBoundary,
-                               paramName,
-                               fileName ?? "myDataFile",
-                               uploadContentType);
+                var header = $"--{formDataBoundary}\r\nContent-Disposition: form-data; name=\"{paramName}\"; filename=\"{fileName ?? "myDataFile"}\";\r\nContent-Type: {uploadContentType}\r\n\r\n";
 
-                string footer = "\r\n--" + formDataBoundary + "--\r\n";
+                var footer = "\r\n--" + formDataBoundary + "--\r\n";
 
                 request.ContentLength = Encoding.UTF8.GetByteCount(header) + data.Length + Encoding.UTF8.GetByteCount(footer);
 
@@ -241,40 +231,39 @@ namespace VK.WindowsPhone.SDK.Util
 #if SILVERLIGHT
         private static void ResponseCallback(IAsyncResult asynchronousResult)
         {
-            RequestState requestState = (RequestState)asynchronousResult.AsyncState;
+            var requestState = (RequestState)asynchronousResult.AsyncState;
 
             try
             {
                 // State of request is asynchronous.
 
-                HttpWebRequest httpWebRequest = requestState.request;
+                var httpWebRequest = requestState.request;
                 requestState.response = (HttpWebResponse)httpWebRequest.EndGetResponse(asynchronousResult);
 
                 // Read the response into a Stream object.
-                Stream responseStream = requestState.response.GetCompressedResponseStream();
+                var responseStream = requestState.response.GetCompressedResponseStream();
                 requestState.streamResponse = responseStream;
 
                 // Begin the Reading of the contents of the HTML page and print it to the console.
-                IAsyncResult asynchronousInputRead = responseStream.BeginRead(requestState.BufferRead, 0, BUFFER_SIZE, new AsyncCallback(ReadCallBack), requestState);
+                responseStream.BeginRead(requestState.BufferRead, 0, BUFFER_SIZE, ReadCallBack, requestState);
             }
             catch (WebException ex)
             {
-                Logger.Error(string.Format("VKHttpRequestHelper.ResponseCallback failed. Got httpWebResponse = {0} , uri = {1}", ex.Response is HttpWebResponse, requestState.request.RequestUri), ex);
+                Logger.Error($"VKHttpRequestHelper.ResponseCallback failed. Got httpWebResponse = {ex.Response is HttpWebResponse} , uri = {requestState.request.RequestUri}", ex);
 
-                if (ex.Response is HttpWebResponse && ex.Response.ContentLength > 0)
+                var response = ex.Response as HttpWebResponse;
+                if (response != null && ex.Response.ContentLength > 0)
                 {
                     requestState.httpError = true;
 
-                    var raw = ex.Response as HttpWebResponse;
-                    
-                    requestState.response = ex.Response as HttpWebResponse;
+                    requestState.response = response;
 
-                    Stream responseStream = requestState.response.GetCompressedResponseStream();
+                    var responseStream = requestState.response.GetCompressedResponseStream();
 
                     requestState.streamResponse = responseStream;
 
                     // Begin the Reading of the contents of the HTML page and print it to the console.
-                    IAsyncResult asynchronousInputRead = responseStream.BeginRead(requestState.BufferRead, 0, BUFFER_SIZE, new AsyncCallback(ReadCallBack), requestState);
+                    responseStream.BeginRead(requestState.BufferRead, 0, BUFFER_SIZE, ReadCallBack, requestState);
                 }
                 else
                 {
@@ -284,7 +273,7 @@ namespace VK.WindowsPhone.SDK.Util
             }
             catch (Exception exc)
             {
-                Logger.Error(string.Format("VKHttpRequestHelper.ResponseCallback failed. Uri ={0}", requestState.request.RequestUri), exc);
+                Logger.Error($"VKHttpRequestHelper.ResponseCallback failed. Uri ={requestState.request.RequestUri}", exc);
                 SafeClose(requestState);
                 SafeInvokeCallback(requestState.resultCallback, false, null);
             }
@@ -292,18 +281,18 @@ namespace VK.WindowsPhone.SDK.Util
 
         private static void ReadCallBack(IAsyncResult asyncResult)
         {
-            RequestState requestState = (RequestState)asyncResult.AsyncState;
+            var requestState = (RequestState)asyncResult.AsyncState;
 
             try
             {
-                Stream responseStream = requestState.streamResponse;
-                int read = responseStream.EndRead(asyncResult);
+                var responseStream = requestState.streamResponse;
+                var read = responseStream.EndRead(asyncResult);
 
                 if (read > 0)
                 {
                     requestState.readBytes.AddRange(requestState.BufferRead.Take(read));
 
-                    IAsyncResult asynchronousResult = responseStream.BeginRead(requestState.BufferRead, 0, BUFFER_SIZE, new AsyncCallback(ReadCallBack), requestState);
+                    var asynchronousResult = responseStream.BeginRead(requestState.BufferRead, 0, BUFFER_SIZE, new AsyncCallback(ReadCallBack), requestState);
                 }
                 else
                 {
@@ -316,7 +305,7 @@ namespace VK.WindowsPhone.SDK.Util
                         (DateTime.Now - requestState.startTime).TotalMilliseconds,
                         requestState.request.RequestUri.OriginalString, stringContent);
 
-                    SafeInvokeCallback(requestState.resultCallback, requestState.httpError ? false : true, stringContent);
+                    SafeInvokeCallback(requestState.resultCallback, !requestState.httpError, stringContent);
                 }
             }
             catch (Exception exc)
@@ -331,14 +320,8 @@ namespace VK.WindowsPhone.SDK.Util
         {
             try
             {
-                if (state.streamResponse != null)
-                {
-                    state.streamResponse.Close();
-                }
-                if (state.response != null)
-                {
-                    state.response.Close();
-                }
+                state.streamResponse?.Close();
+                state.response?.Close();
             }
             catch (Exception exc)
             {
@@ -380,7 +363,7 @@ namespace VK.WindowsPhone.SDK.Util
                     sb = sb.Append("&");
                 }
 
-                string valueStr = escapeString ? Uri.EscapeDataString(kvp.Value) : kvp.Value;
+                var valueStr = escapeString ? Uri.EscapeDataString(kvp.Value) : kvp.Value;
 
                 sb = sb.AppendFormat(
                     "{0}={1}",
@@ -391,14 +374,6 @@ namespace VK.WindowsPhone.SDK.Util
             return sb.ToString();
         }
 
-        private static string GetAsLogString(Dictionary<string, string> parameters)
-        {
-            string result = "";
-            foreach (var kvp in parameters)
-            {
-                result += kvp.Key + " = " + kvp.Value + Environment.NewLine;
-            }
-            return result;
-        }
+        private static string GetAsLogString(Dictionary<string, string> parameters) => parameters.Aggregate("", (current, kvp) => current + (kvp.Key + " = " + kvp.Value + Environment.NewLine));
     }
 }

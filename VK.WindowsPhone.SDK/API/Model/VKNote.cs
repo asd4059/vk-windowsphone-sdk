@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VK.WindowsPhone.SDK.Util;
+﻿using VK.WindowsPhone.SDK.Util;
 
 
 namespace VK.WindowsPhone.SDK.API.Model
 {
-    public partial class VKNote
+    public class VKNote
     {
         public long id { get; set; }
 
@@ -19,10 +14,7 @@ namespace VK.WindowsPhone.SDK.API.Model
         public string title
         {
             get { return _title; }
-            set
-            {
-                _title = (value ?? "").ForUI();
-            }
+            set { _title = (value ?? "").ForUI(); }
         }
 
 
@@ -30,10 +22,7 @@ namespace VK.WindowsPhone.SDK.API.Model
         public string text
         {
             get { return _text; }
-            set
-            {
-                _text = (value ?? "").ForUI();
-            }
+            set { _text = (value ?? "").ForUI(); }
         }
 
 

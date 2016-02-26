@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using VK.WindowsPhone.SDK.Util;
 
 namespace VK.WindowsPhone.SDK.API.Model
@@ -10,63 +6,33 @@ namespace VK.WindowsPhone.SDK.API.Model
     /// <summary>
     /// https://vk.com/dev/fields
     /// </summary>
-    public partial class VKUser
+    public class VKUser
     {
-        public long id
-        {
-            get;
-            set;
-        }
+        public long id { get; set; }
 
         private string _fName = "";
         public string first_name
         {
             get { return _fName; }
-            set
-            {
-                _fName = (value ?? "").ForUI();
-            }
+            set { _fName = (value ?? "").ForUI(); }
         }
 
         private string _lName = "";
         public string last_name
         {
             get { return _lName; }
-            set
-            {
-                _lName = (value ?? "").ForUI();
-            }
+            set { _lName = (value ?? "").ForUI(); }
         }
 
-        public string deactivated
-        {
-            get;
-            set;
-        }
+        public string deactivated { get; set; }
 
-        public int hidden
-        {
-            get;
-            set;
-        }
+        public int hidden { get; set; }
 
-        public int verified
-        {
-            get;
-            set;
-        }
+        public int verified { get; set; }
 
-        public int blacklisted
-        {
-            get;
-            set;
-        }
+        public int blacklisted { get; set; }
 
-        public int sex
-        {
-            get;
-            set;
-        }
+        public int sex { get; set; }
 
         public string bdate { get; set; }
 
@@ -131,11 +97,7 @@ namespace VK.WindowsPhone.SDK.API.Model
 
         public VKCounters counters { get; set; }
 
-        public VKUserOccupation occupation
-        {
-            get;
-            set;
-        }
+        public VKUserOccupation occupation { get; set; }
 
         public string nickname { get; set; }
 
@@ -162,10 +124,7 @@ namespace VK.WindowsPhone.SDK.API.Model
         public string activities
         {
             get { return _activity; }
-            set
-            {
-                _activity = (value ?? "").ForUI();
-            }
+            set { _activity = (value ?? "").ForUI(); }
         }
 
 
@@ -173,74 +132,49 @@ namespace VK.WindowsPhone.SDK.API.Model
         public string interests
         {
             get { return _interests; }
-            set
-            {
-                _interests = (value ?? "").ForUI();
-            }
+            set { _interests = (value ?? "").ForUI(); }
         }
 
         private string _movies = "";
         public string movies
         {
-            get
-            {
-                return _movies;
-            }
-            set
-            {
-                _movies = (value ?? "").ForUI();
-            }
+            get { return _movies; }
+            set { _movies = (value ?? "").ForUI(); }
         }
 
         private string _tv = "";
         public string tv
         {
             get { return _tv; }
-            set
-            {
-                _tv = (value ?? "").ForUI();
-            }
+            set { _tv = (value ?? "").ForUI(); }
         }
 
         private string _books = "";
         public string books
         {
             get { return _books; }
-            set
-            {
-                _books = (value ?? "").ForUI();
-
-            }
+            set { _books = (value ?? "").ForUI(); }
         }
 
         private string _games = "";
         public string games
         {
             get { return _games; }
-            set
-            {
-                _games = (value ?? "").ForUI();
-            }
+            set { _games = (value ?? "").ForUI(); }
         }
 
         private string _about = "";
         public string about
         {
             get { return _about; }
-            set
-            {
-                _about = (value ?? "").ForUI();
-            }
+            set { _about = (value ?? "").ForUI(); }
         }
 
         private string _quotes = "";
         public string quotes
         {
             get { return _quotes; }
-            set
-            {
-                _quotes = (value ?? "").ForUI();
-            }
+            set { _quotes = (value ?? "").ForUI(); }
         }
 
 
@@ -261,7 +195,7 @@ namespace VK.WindowsPhone.SDK.API.Model
     }
 
 
-    public partial class VKUserExports
+    public class VKUserExports
     {
         public int twitter { get; set; }
 
@@ -272,58 +206,32 @@ namespace VK.WindowsPhone.SDK.API.Model
         public int instagram { get; set; }
     }
 
-    public partial class VKUserPersonal
+    public class VKUserPersonal
     {
         public int political { get; set; }
 
         public List<string> langs { get; set; }
 
-        public string religion
-        {
-            get;
-            set;
-        }
+        public string religion { get; set; }
 
 
         private string _inspired_by = "";
         public string inspired_by
         {
-            get
-            {
-                return _inspired_by;
-            }
-            set
-            {
-                _inspired_by = (value ?? "").ForUI();
-            }
+            get { return _inspired_by; }
+            set { _inspired_by = (value ?? "").ForUI(); }
         }
 
-        public int people_main
-        {
-            get;
-            set;
-        }
+        public int people_main { get; set; }
 
-        public int life_main
-        {
-            get;
-            set;
-        }
+        public int life_main { get; set; }
 
-        public int smoking
-        {
-            get;
-            set;
-        }
+        public int smoking { get; set; }
 
-        public int alcohol
-        {
-            get;
-            set;
-        }
+        public int alcohol { get; set; }
     }
 
-    public partial class VKUserRelative
+    public class VKUserRelative
     {       
         public long id { get; set; }
 
@@ -332,7 +240,7 @@ namespace VK.WindowsPhone.SDK.API.Model
         public string type { get; set; }
     }
 
-    public partial class VKUserOccupation
+    public class VKUserOccupation
     {
         public static readonly string OCCUPATION_TYPE_WORK = "work";
         public static readonly string OCCUPATION_TYPE_SCHOOL = "school";
@@ -345,7 +253,7 @@ namespace VK.WindowsPhone.SDK.API.Model
         public string name { get; set; }
     }
 
-    public partial class VKCounters
+    public class VKCounters
     {
 
         public int albums { get; set; }
@@ -374,14 +282,14 @@ namespace VK.WindowsPhone.SDK.API.Model
     }
 
 
-    public partial class VKUserStatus
+    public class VKUserStatus
     {
         public long time { get; set; }
  
         public int platform { get; set; }
     }
 
-    public partial class VKUniversity
+    public class VKUniversity
     {
         public long id { get; set; }
 
@@ -403,7 +311,7 @@ namespace VK.WindowsPhone.SDK.API.Model
     
     }
 
-    public partial class VKSchool
+    public class VKSchool
     {
         public long id { get; set; }
 
@@ -426,6 +334,5 @@ namespace VK.WindowsPhone.SDK.API.Model
         public long type { get; set; }
 
         public string type_str { get; set; }
-
     }
 }

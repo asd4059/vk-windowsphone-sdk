@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace VK.WindowsPhone.SDK.API.Model
 {
     /// <summary>
     /// https://vk.com/dev/post
     /// </summary>
-    public partial class VKWallPost
+    public class VKWallPost
     {
         public long id { get; set; }
 
@@ -51,14 +47,14 @@ namespace VK.WindowsPhone.SDK.API.Model
     }
 
 
-    public partial class VKComments
+    public class VKComments
     {
         public int count { get; set; }
         public int can_post { get; set; }
 
     }
 
-    public partial class VKLikes
+    public class VKLikes
     {
         public int count { get; set; }
         public int user_likes { get; set; }
@@ -66,13 +62,13 @@ namespace VK.WindowsPhone.SDK.API.Model
         public int can_publish { get; set; }
     }
 
-    public partial class VKReposts
+    public class VKReposts
     {
         public int count { get; set; }
         public int user_reposted { get; set; }
     }
 
-    public partial class VKPostSource
+    public class VKPostSource
     {
         public string platform { get; set; }
         public string type { get; set; }

@@ -100,10 +100,10 @@ namespace VK.WindowsPhone.SDK.Util
                 startIndex += 64;
             }
             // The final data block. 
-            return VKMD5.GetHashFinalBlock(input, startIndex, input.Length - startIndex, abcd, (Int64) input.Length * 8);
+            return VKMD5.GetHashFinalBlock(input, startIndex, input.Length - startIndex, abcd, (long) input.Length * 8);
         }
 
-        internal static byte[] GetHashFinalBlock(byte[] input, int ibStart, int cbSize, ABCDStruct ABCD, Int64 len)
+        internal static byte[] GetHashFinalBlock(byte[] input, int ibStart, int cbSize, ABCDStruct ABCD, long len)
         {
             byte[] working = new byte[64];
             byte[] length = BitConverter.GetBytes(len);

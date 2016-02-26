@@ -9,18 +9,18 @@ namespace VK.WindowsPhone.SDK
 {
     public class VKAccessToken
     {
-        public const String ACCESS_TOKEN = "access_token";
-        public const String EXPIRES_IN = "expires_in";
-        public const String USER_ID = "user_id";
-        public const String SECRET = "secret";
-        public const String HTTPS_REQUIRED = "https_required";
-        public const String CREATED = "created";
-        public const String SUCCESS = "success";
+        public const string ACCESS_TOKEN = "access_token";
+        public const string EXPIRES_IN = "expires_in";
+        public const string USER_ID = "user_id";
+        public const string SECRET = "secret";
+        public const string HTTPS_REQUIRED = "https_required";
+        public const string CREATED = "created";
+        public const string SUCCESS = "success";
 
         /// <summary>
         /// String token for use in request parameters
         /// </summary>
-        public String AccessToken = null;
+        public string AccessToken = null;
 
         /// <summary>
         /// Time when token expires
@@ -30,12 +30,12 @@ namespace VK.WindowsPhone.SDK
         /// <summary>
         /// Current user id for this token
         /// </summary>
-        public String UserId = null;
+        public string UserId = null;
 
         /// <summary>
         /// User secret to sign requests (if nohttps used)
         /// </summary>
-        public String Secret = null;
+        public string Secret = null;
 
         /// <summary>
         /// If user sets "Always use HTTPS" setting in his profile, it will be true
@@ -51,7 +51,7 @@ namespace VK.WindowsPhone.SDK
         /// Save token into Isolated Storage with key
         /// </summary>
         /// <param name="tokenKey">Your key for saving settings</param>
-        public void SaveTokenToIsolatedStorage(String tokenKey)
+        public void SaveTokenToIsolatedStorage(string tokenKey)
         {
 #if SILVERLIGHT
             var iso = IsolatedStorageSettings.ApplicationSettings;
@@ -71,7 +71,7 @@ namespace VK.WindowsPhone.SDK
         /// Removes token from Isolated Storage with specified key
         /// </summary>
         /// <param name="tokenKey">Your key for saving settings</param>
-        public static void RemoveTokenInIsolatedStorage(String tokenKey)
+        public static void RemoveTokenInIsolatedStorage(string tokenKey)
         {
 #if SILVERLIGHT
             var iso = IsolatedStorageSettings.ApplicationSettings;
@@ -86,9 +86,9 @@ namespace VK.WindowsPhone.SDK
         /// Serialize token into string
         /// </summary>
         /// <returns></returns>
-        protected String SerializeTokenData()
+        protected string SerializeTokenData()
         {
-            var args = new Dictionary<String, Object>
+            var args = new Dictionary<string, object>
             {
                 {ACCESS_TOKEN, AccessToken},
                 {EXPIRES_IN, ExpiresIn},
@@ -114,7 +114,7 @@ namespace VK.WindowsPhone.SDK
         /// </summary>
         /// <param name="urlString">String that contains URL-query part with token. E.g. access_token=eee&expires_in=0..</param>
         /// <returns>parsed token</returns>
-        public static VKAccessToken FromUrlString(String urlString)
+        public static VKAccessToken FromUrlString(string urlString)
         {
             if (urlString == null)
                 return null;
@@ -129,7 +129,7 @@ namespace VK.WindowsPhone.SDK
         /// </summary>
         /// <param name="args">Dictionary containing token info</param>
         /// <returns>Parsed token</returns>
-        public static VKAccessToken TokenFromParameters(Dictionary<String, String> args)
+        public static VKAccessToken TokenFromParameters(Dictionary<string, string> args)
         {
             if (args == null || args.Count == 0)
                 return null;
@@ -168,7 +168,7 @@ namespace VK.WindowsPhone.SDK
         /// </summary>
         /// <param name="tokenKey">Your key for saving settings</param>
         /// <returns>Previously saved token or null</returns>
-        public static VKAccessToken TokenFromIsolatedStorage(String tokenKey)
+        public static VKAccessToken TokenFromIsolatedStorage(string tokenKey)
         {
 #if SILVERLIGHT
             var iso = IsolatedStorageSettings.ApplicationSettings;
@@ -183,7 +183,7 @@ namespace VK.WindowsPhone.SDK
                 return null;
             }
 
-            String tokenString = Windows.Storage.ApplicationData.Current.LocalSettings.Values[tokenKey].ToString();
+            string tokenString = Windows.Storage.ApplicationData.Current.LocalSettings.Values[tokenKey].ToString();
 
             return FromUrlString(tokenString);
 #endif
@@ -194,11 +194,11 @@ namespace VK.WindowsPhone.SDK
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public static VKAccessToken TokenFromFile(String filename)
+        public static VKAccessToken TokenFromFile(string filename)
         {
             try
             {
-                String data = VKUtil.FileToString(filename);
+                string data = VKUtil.FileToString(filename);
                 return FromUrlString(data);
             }
             catch

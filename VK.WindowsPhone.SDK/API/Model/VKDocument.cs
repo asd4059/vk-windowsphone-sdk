@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VK.WindowsPhone.SDK.Util;
+﻿using VK.WindowsPhone.SDK.Util;
 
 namespace VK.WindowsPhone.SDK.API.Model
 {
-    public partial class VKDocument
+    public class VKDocument
     {
         public long id { get; set; }
 
@@ -17,10 +12,7 @@ namespace VK.WindowsPhone.SDK.API.Model
         public string title
         {
             get { return _title; }
-            set
-            {
-                _title = (value ?? "").ForUI();
-            }
+            set { _title = (value ?? "").ForUI(); }
         }
         public long size { get; set; }
         public string ext { get; set; }

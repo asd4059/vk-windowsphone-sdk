@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VK.WindowsPhone.SDK.API.Model
+﻿namespace VK.WindowsPhone.SDK.API.Model
 {
-    public partial class VKPage
+    public class VKPage
     {
         public long id { get; set; }
 

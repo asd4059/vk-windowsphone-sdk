@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace VK.WindowsPhone.SDK.Util
 {
@@ -11,7 +10,7 @@ namespace VK.WindowsPhone.SDK.Util
         /// <param name="json">Server response with format - field: 1</param>
         /// <param name="name">Name of field to read</param>
         /// <returns></returns>
-        public static bool ValueVKBool(this JToken json, String name)
+        public static bool ValueVKBool(this JToken json, string name)
         {
             return json != null && json.Value<int>(name) == 1;
         }

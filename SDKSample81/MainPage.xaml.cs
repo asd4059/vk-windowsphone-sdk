@@ -14,7 +14,7 @@ namespace SDK_Sample
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private List<String> _scope = new List<string> { VKScope.FRIENDS, VKScope.WALL, VKScope.PHOTOS, VKScope.AUDIO };
+        private List<string> _scope = new List<string> { VKScope.FRIENDS, VKScope.WALL, VKScope.PHOTOS, VKScope.AUDIO };
 
         public MainPage()
         {
@@ -111,7 +111,7 @@ namespace SDK_Sample
         {
             var request = new VKRequest(new VKRequestParameters("captcha.force"));
 
-            request.Dispatch<Object>((res) => { }, (json) => new Object());
+            request.Dispatch<object>((res) => { }, (json) => new object());
 
             VKRequest.Dispatch<object>(
                 new VKRequestParameters("captcha.force"),
