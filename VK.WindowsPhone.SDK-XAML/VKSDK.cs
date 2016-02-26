@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Windows.Security.Authentication.Web;
 using VK.WindowsPhone.SDK.API;
 using VK.WindowsPhone.SDK.Pages;
 using VK.WindowsPhone.SDK.Util;
@@ -152,25 +153,30 @@ namespace VK.WindowsPhone.SDK
         
                     break;
                 default:
-                    var loginUserControl = new VKLoginUserControl
-                    {
-                        Scopes = scopeList,
-                        Revoke = revoke
-                    };
-
-
-                    loginUserControl.ShowInPopup(Windows.UI.Xaml.Window.Current.Bounds.Width,
-                         Windows.UI.Xaml.Window.Current.Bounds.Height);
+                    AuthorizeWebAuthenticationBroker(scopeList, revoke);
 
                     break;
             }
-
-
         }
 
         private static void AuthorizeVKApp(List<string> scopeList, bool revoke)
         {
             VKAppLaunchAuthorizationHelper.AuthorizeVKApp("", Instance.CurrentAppID, scopeList, revoke);
+        }
+
+        public static async void AuthorizeWebAuthenticationBroker(List<string> scopeList, bool revoke)
+        {
+            const string REDIRECT_URL = "https://oauth.vk.com/blank.html";
+            var uri = "https://oauth.vk.com/authorize?" + $"client_id={Instance.CurrentAppID}&" +
+                      $"scope={scopeList.GetCommaSeparated()}&" + $"redirect_uri={REDIRECT_URL}&" + "display=mobile&" +
+                      $"v={API_VERSION}&" + "response_type=token&" + $"revoke={(revoke ? 1 : 0)}";
+            var authResult = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, new Uri(uri), new Uri(REDIRECT_URL));
+            var index = authResult.ResponseData.IndexOf('#');
+            if (index > -1)
+            {
+                var result = authResult.ResponseData.Substring(index + 1);
+                ProcessLoginResult(result, false, null);
+            }
         }
 
         private enum CheckTokenResult
