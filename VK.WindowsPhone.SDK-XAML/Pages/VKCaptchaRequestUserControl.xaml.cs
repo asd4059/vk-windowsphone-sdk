@@ -16,7 +16,7 @@ namespace VK.WindowsPhone.SDK_XAML.Pages
 
         public VKCaptchaRequestUserControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void SendButton_Click(object sender, RoutedEventArgs e)

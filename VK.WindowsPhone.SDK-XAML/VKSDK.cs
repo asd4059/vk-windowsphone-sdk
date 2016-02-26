@@ -14,7 +14,6 @@ namespace VK.WindowsPhone.SDK
 
         private const string PLATFORM_ID = "winphone";
 
-
         private static VKSDK _instance;
 
         /// <summary>
@@ -34,6 +33,7 @@ namespace VK.WindowsPhone.SDK
         private const string VKSDK_ACCESS_TOKEN_ISOLATEDSTORAGE_KEY = "VKSDK_ACCESS_TOKEN_DONTTOUCH";
 
         internal const string VK_AUTH_STR_FRM = "https://oauth.vk.com/authorize?client_id={0}&scope={1}&redirect_uri={2}&display=mobile&v={3}&response_type=token&revoke={4}";
+        private const string REDIRECT_URL = "https://oauth.vk.com/blank.html";
 
         /// <summary>
         /// Your VK app ID. 
@@ -158,14 +158,10 @@ namespace VK.WindowsPhone.SDK
             }
         }
 
-        private static void AuthorizeVKApp(List<string> scopeList, bool revoke)
-        {
-            VKAppLaunchAuthorizationHelper.AuthorizeVKApp("", Instance.CurrentAppID, scopeList, revoke);
-        }
+        private static async void AuthorizeVKApp(List<string> scopeList, bool revoke) => await VKAppLaunchAuthorizationHelper.AuthorizeVKApp("", Instance.CurrentAppID, scopeList, revoke);
 
         public static async void AuthorizeWebAuthenticationBroker(List<string> scopeList, bool revoke)
         {
-            const string REDIRECT_URL = "https://oauth.vk.com/blank.html";
             var uri = "https://oauth.vk.com/authorize?" + $"client_id={Instance.CurrentAppID}&" +
                       $"scope={scopeList.GetCommaSeparated()}&" + $"redirect_uri={REDIRECT_URL}&" + "display=mobile&" +
                       $"v={API_VERSION}&" + "response_type=token&" + $"revoke={(revoke ? 1 : 0)}";
@@ -442,7 +438,6 @@ namespace VK.WindowsPhone.SDK
         {
             VKExecute.ExecuteOnUIThread(async () =>
                 {
-                    const string REDIRECT_URL = "https://oauth.vk.com/blank.html";
                     var authResult = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, new Uri(request.ValidationUri), new Uri(REDIRECT_URL));
                     var index = authResult.ResponseData.IndexOf('#');
                     if (index > -1)
@@ -450,7 +445,6 @@ namespace VK.WindowsPhone.SDK
                         var result = authResult.ResponseData.Substring(index + 1);
                         ProcessLoginResult(result, true, callback);
                     }
-
                 });
         }
     }
