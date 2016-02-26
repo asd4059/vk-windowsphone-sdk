@@ -68,7 +68,7 @@ namespace VK.WindowsPhone.SDK.Util
             for (var i = 0; i + 1 < args.Length; i += 2)
             {
                 if (!string.IsNullOrEmpty(args[i + 1]))
-                    result.Add((string)args[i], args[i + 1]);
+                    result.Add(args[i], args[i + 1]);
             }
 
             return result;
