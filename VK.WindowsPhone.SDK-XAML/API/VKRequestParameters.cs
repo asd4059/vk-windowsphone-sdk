@@ -6,7 +6,7 @@ namespace VK.WindowsPhone.SDK.API
 {
     public class VKRequestParameters
     {
-        public Dictionary<string, string> Parameters { get; private set; }
+        public Dictionary<string, string> Parameters { get; internal set; }
         public string MethodName { get; private set; }
 
         public VKRequestParameters(string methodName, Dictionary<string, string> parameters = null)

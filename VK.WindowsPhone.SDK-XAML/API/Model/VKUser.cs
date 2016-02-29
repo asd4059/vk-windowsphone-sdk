@@ -24,6 +24,8 @@ namespace VK.WindowsPhone.SDK.API.Model
             set { _lName = (value ?? "").ForUI(); }
         }
 
+        public string Name => $"{first_name} {last_name}";
+
         public string deactivated { get; set; }
 
         public int hidden { get; set; }
@@ -192,6 +194,17 @@ namespace VK.WindowsPhone.SDK.API.Model
 
         public string maiden_name { get; set; }
 
+        public string GetMaxResolutionPhoto()
+        {
+
+            if (photo_max != null)
+                return photo_max;
+            if (photo_200 != null)
+                return photo_200;
+            if (photo_100 != null)
+                return photo_100;
+            return photo_50;
+        }
     }
 
 

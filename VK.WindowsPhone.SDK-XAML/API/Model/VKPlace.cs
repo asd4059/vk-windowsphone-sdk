@@ -2,7 +2,7 @@
 
 namespace VK.WindowsPhone.SDK.API.Model
 {
-    public class Place
+    public class VKPlace
     {
         private string _title = "";
         public string title

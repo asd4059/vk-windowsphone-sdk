@@ -5,16 +5,14 @@ using System.Text;
 
 namespace VK.WindowsPhone.SDK.Util
 {
-    static class StrUtil
+    internal static class StrUtil
     {
         public static string ForUI(this string backendTextString)
         {
             if (string.IsNullOrEmpty(backendTextString))
-            {
-                return "";
-            }
+                return string.Empty;
 
-            string res = backendTextString;
+            var res = backendTextString;
 
             res = res.Replace("\r\n", "\n");
 
@@ -28,26 +26,24 @@ namespace VK.WindowsPhone.SDK.Util
         public static string MakeIntoOneLine(this string str)
         {
             if (str == null)
-                return "";
+                return string.Empty;
 
             str = str.Replace(Environment.NewLine, " ");
             str = str.Replace("\n", " ");
             return str;
         }
 
-        public static string GetCommaSeparated(this List<string> ids)
+        public static string GetCommaSeparated(this IList<string> ids)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
-            int count = ids.Count;
+            var count = ids.Count;
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 sb = sb.Append(ids[i]);
                 if (i != count - 1)
-                {
                     sb = sb.Append(",");
-                }
             }
 
             return sb.ToString();

@@ -17,7 +17,7 @@ namespace VK.WindowsPhone.SDK
         public static async Task AuthorizeVKApp(
             string state,
             string clientId, 
-            List<string> scopeList,
+            IList<string> scopeList,
             bool revoke)
         {
             var redirectUri = await GetRedirectUri();

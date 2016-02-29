@@ -78,10 +78,4 @@ namespace VK.WindowsPhone.SDK.API.Model
 
         public string photo_200 { get; set; }
     }
-
-    public class VKPushSettings
-    {
-        public int disabled_until { get; set; }
-        public int sound { get; set; }      
-    }
 }

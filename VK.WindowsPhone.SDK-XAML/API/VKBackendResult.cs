@@ -9,5 +9,7 @@
         public T Data { get; set; }
 
         public VKError Error { get; set; }
+
+        public bool IsSuccessful => ResultCode == VKResultCode.Succeeded;
     }
 }

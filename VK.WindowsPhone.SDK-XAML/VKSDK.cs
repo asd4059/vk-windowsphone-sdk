@@ -124,7 +124,7 @@ namespace VK.WindowsPhone.SDK
         /// <param name="scopeList">List of permissions for your app</param>
         /// <param name="revoke">If true user will be allowed to logout and change user</param>
         /// <param name="forceOAuth">SDK will use only OAuth authorization via WebBrowser</param>
-        public static void Authorize(List<string> scopeList, bool revoke = false, bool forceOAuth = false, LoginType loginType = LoginType.WebView)
+        public static void Authorize(IList<string> scopeList, bool revoke = false, bool forceOAuth = false, LoginType loginType = LoginType.WebView)
         {
             try
             {
@@ -158,9 +158,9 @@ namespace VK.WindowsPhone.SDK
             }
         }
 
-        private static async void AuthorizeVKApp(List<string> scopeList, bool revoke) => await VKAppLaunchAuthorizationHelper.AuthorizeVKApp("", Instance.CurrentAppID, scopeList, revoke);
+        private static async void AuthorizeVKApp(IList<string> scopeList, bool revoke) => await VKAppLaunchAuthorizationHelper.AuthorizeVKApp("", Instance.CurrentAppID, scopeList, revoke);
 
-        public static async void AuthorizeWebAuthenticationBroker(List<string> scopeList, bool revoke)
+        public static async void AuthorizeWebAuthenticationBroker(IList<string> scopeList, bool revoke)
         {
             var uri = "https://oauth.vk.com/authorize?" + $"client_id={Instance.CurrentAppID}&" +
                       $"scope={scopeList.GetCommaSeparated()}&" + $"redirect_uri={REDIRECT_URL}&" + "display=mobile&" +

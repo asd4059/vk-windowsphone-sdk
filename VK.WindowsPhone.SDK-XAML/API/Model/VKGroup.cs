@@ -35,7 +35,7 @@ namespace VK.WindowsPhone.SDK.API.Model
 
         public long country { get; set; }
 
-        public VKPlace place { get; set; }
+        public Place place { get; set; }
 
         private string _desc = "";
         public string description
@@ -76,24 +76,32 @@ namespace VK.WindowsPhone.SDK.API.Model
 
         public string site { get; set; }
 
-    }
+        public string GetMaxResolutionPhoto()
+        {
+            if (photo_200 != null)
+                return photo_200;
+            if (photo_100 != null)
+                return photo_100;
+            return photo_50;
+        }
 
-    public class VKPlace
-    {
-        public long id { get; set; }
+        public class Place
+        {
+            public long id { get; set; }
 
-        public string title { get; set; }
+            public string title { get; set; }
 
-        public int latitude { get; set; }
+            public int latitude { get; set; }
 
-        public int longitude { get; set; }
+            public int longitude { get; set; }
 
-        public string type { get; set; }
+            public string type { get; set; }
 
-        public long country { get; set; }
+            public long country { get; set; }
 
-        public long city { get; set; }
+            public long city { get; set; }
 
-        public string address { get; set; }
+            public string address { get; set; }
+        }
     }
 }
