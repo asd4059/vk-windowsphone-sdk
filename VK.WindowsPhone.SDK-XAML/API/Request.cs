@@ -7,9 +7,7 @@ namespace VK.WindowsPhone.SDK.API
 {
     public static partial class Request
     {
-        private static object[] Args(params object[] args) => args;
-
-        private static async Task<VKBackendResult<T>> SendRequest<T>(string fullFunctionName, IReadOnlyList<object> parameters = null)
+        private static async Task<VKBackendResult<T>> SendRequest<T>(string fullFunctionName, params object[] parameters)
         {
             var splitStr = fullFunctionName.Split('.');
             var className = splitStr[0];
@@ -22,7 +20,7 @@ namespace VK.WindowsPhone.SDK.API
 
             var param = new Dictionary<string, string>();
 
-            if (parameters != null && parametersInfo.Length == parameters.Count)
+            if (parameters != null && parametersInfo.Length == parameters.Length)
                 for (var i = 0; i < parametersInfo.Length; i++)
                     if (parameters[i]!=null && !parameters[i].Equals(parametersInfo[i].DefaultValue))
                     {

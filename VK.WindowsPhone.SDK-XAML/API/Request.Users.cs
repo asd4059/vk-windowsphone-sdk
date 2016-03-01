@@ -8,7 +8,7 @@ namespace VK.WindowsPhone.SDK.API
         {
             public static async Task<VKBackendResult<T>> Get<T>(string user_ids = null, string fields = null,
                 string name_case = null)
-                => await SendRequest<T>("users.get",Args(user_ids, fields, name_case));
+                => await SendRequest<T>("users.get", user_ids, fields, name_case);
         }
     }
 }

@@ -11,9 +11,10 @@ namespace VK.WindowsPhone.SDK.API
                 string start_from = null, int count = 50, string fields = null)
                 =>
                     await
-                        SendRequest<T>("newsfeed.get",Args(filters, return_banned, start_time, end_time, max_photos, source_ids,
+                        SendRequest<T>("newsfeed.get", filters, return_banned, start_time, end_time, max_photos,
+                            source_ids,
                             start_from,
-                            count, fields));
+                            count, fields);
         }
     }
 }
