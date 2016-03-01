@@ -282,9 +282,6 @@
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\MemberName.cs">
       <Link>MemberName.cs</Link>
     </Compile>
-    <Compile Include="..\VK.WindowsPhone.SDK-XAML\MethodName.cs">
-      <Link>MethodName.cs</Link>
-    </Compile>
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\Pages\VKCaptchaRequestUserControl.xaml.cs">
       <Link>Pages\VKCaptchaRequestUserControl.xaml.cs</Link>
       <DependentUpon>VKCaptchaRequestUserControl.xaml</DependentUpon>
@@ -352,6 +349,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="WindowsDesktop, Version=10.0.10586.0">
+      <Name>Windows Desktop Extensions for the UWP</Name>
+    </SDKReference>
+    <SDKReference Include="WindowsMobile, Version=10.0.10586.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
