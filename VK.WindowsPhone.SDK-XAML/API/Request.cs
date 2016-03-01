@@ -11,7 +11,12 @@ namespace VK.WindowsPhone.SDK.API
 
         private static async Task<VKBackendResult<T>> SendRequest<T>(IReadOnlyList<object> parameters = null, [CallerMemberName] string function = null)
         {
+#if WINDOWS_UWP
             var methodInfo = typeof(Request).GetMethod(function);
+#elif PCL
+            var methodInfo = typeof(Request).GetTypeInfo().GetDeclaredMethod(function);
+#endif
+
             var methodName = methodInfo.GetCustomAttribute<MethodName>()?.Name;
             var parametersInfo = methodInfo.GetParameters();
 

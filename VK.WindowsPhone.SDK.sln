@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VK.WindowsPhone.SDK-XAML", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDKSample-XAML", "SDKSample-XAML\SDKSample-XAML.csproj", "{94AAA208-39D6-4B25-89BD-D42FDFB5D180}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VK.WindowsPhone.SDK-UWP", "VK.WindowsPhone.SDK-UWP\VK.WindowsPhone.SDK-UWP.csproj", "{2133EABD-9161-452E-876A-424743D8E28F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,22 @@ Global
 		{94AAA208-39D6-4B25-89BD-D42FDFB5D180}.Release|x86.ActiveCfg = Release|x86
 		{94AAA208-39D6-4B25-89BD-D42FDFB5D180}.Release|x86.Build.0 = Release|x86
 		{94AAA208-39D6-4B25-89BD-D42FDFB5D180}.Release|x86.Deploy.0 = Release|x86
+		{2133EABD-9161-452E-876A-424743D8E28F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2133EABD-9161-452E-876A-424743D8E28F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2133EABD-9161-452E-876A-424743D8E28F}.Debug|ARM.ActiveCfg = Debug|ARM
+		{2133EABD-9161-452E-876A-424743D8E28F}.Debug|ARM.Build.0 = Debug|ARM
+		{2133EABD-9161-452E-876A-424743D8E28F}.Debug|x64.ActiveCfg = Debug|x64
+		{2133EABD-9161-452E-876A-424743D8E28F}.Debug|x64.Build.0 = Debug|x64
+		{2133EABD-9161-452E-876A-424743D8E28F}.Debug|x86.ActiveCfg = Debug|x86
+		{2133EABD-9161-452E-876A-424743D8E28F}.Debug|x86.Build.0 = Debug|x86
+		{2133EABD-9161-452E-876A-424743D8E28F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2133EABD-9161-452E-876A-424743D8E28F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2133EABD-9161-452E-876A-424743D8E28F}.Release|ARM.ActiveCfg = Release|ARM
+		{2133EABD-9161-452E-876A-424743D8E28F}.Release|ARM.Build.0 = Release|ARM
+		{2133EABD-9161-452E-876A-424743D8E28F}.Release|x64.ActiveCfg = Release|x64
+		{2133EABD-9161-452E-876A-424743D8E28F}.Release|x64.Build.0 = Release|x64
+		{2133EABD-9161-452E-876A-424743D8E28F}.Release|x86.ActiveCfg = Release|x86
+		{2133EABD-9161-452E-876A-424743D8E28F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
