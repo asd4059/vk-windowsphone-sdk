@@ -38,11 +38,11 @@ namespace VK.WindowsPhone.SDK.Util
         public static byte[] GetHash(string input, Encoding encoding)
         {
             if (null == input)
-                throw new System.ArgumentNullException("input", "Unable to calculate hash over null input data");
+                throw new ArgumentNullException(nameof(input), "Unable to calculate hash over null input data");
             if (null == encoding)
-                throw new System.ArgumentNullException("encoding", "Unable to calculate hash over a string without a default encoding. Consider using the GetHash(string) overload to use UTF8 Encoding");
+                throw new ArgumentNullException(nameof(encoding), "Unable to calculate hash over a string without a default encoding. Consider using the GetHash(string) overload to use UTF8 Encoding");
 
-            byte[] target = encoding.GetBytes(input);
+            var target = encoding.GetBytes(input);
 
             return GetHash(target);
         }
@@ -55,9 +55,9 @@ namespace VK.WindowsPhone.SDK.Util
         public static string GetHashString(byte[] input)
         {
             if (null == input)
-                throw new System.ArgumentNullException("input", "Unable to calculate hash over null input data");
+                throw new ArgumentNullException(nameof(input), "Unable to calculate hash over null input data");
 
-            string retval = BitConverter.ToString(GetHash(input));
+            var retval = BitConverter.ToString(GetHash(input));
             retval = retval.Replace("-", "");
 
             return retval;
@@ -66,11 +66,11 @@ namespace VK.WindowsPhone.SDK.Util
         public static string GetHashString(string input, Encoding encoding)
         {
             if (null == input)
-                throw new System.ArgumentNullException("input", "Unable to calculate hash over null input data");
+                throw new ArgumentNullException(nameof(input), "Unable to calculate hash over null input data");
             if (null == encoding)
-                throw new System.ArgumentNullException("encoding", "Unable to calculate hash over a string without a default encoding. Consider using the GetHashString(string) overload to use UTF8 Encoding");
+                throw new ArgumentNullException(nameof(encoding), "Unable to calculate hash over a string without a default encoding. Consider using the GetHashString(string) overload to use UTF8 Encoding");
 
-            byte[] target = encoding.GetBytes(input);
+            var target = encoding.GetBytes(input);
 
             return GetHashString(target);
         }
@@ -83,30 +83,32 @@ namespace VK.WindowsPhone.SDK.Util
         public static byte[] GetHash(byte[] input)
         {
             if (null == input)
-                throw new System.ArgumentNullException("input", "Unable to calculate hash over null input data");
+                throw new ArgumentNullException(nameof(input), "Unable to calculate hash over null input data");
 
             //Intitial values defined in RFC 1321
-            ABCDStruct abcd = new ABCDStruct();
-            abcd.A = 0x67452301;
-            abcd.B = 0xefcdab89;
-            abcd.C = 0x98badcfe;
-            abcd.D = 0x10325476;
+            var abcd = new ABCDStruct
+            {
+                A = 0x67452301,
+                B = 0xefcdab89,
+                C = 0x98badcfe,
+                D = 0x10325476
+            };
 
             //We pass in the input array by block, the final block of data must be handled specialy for padding & length embeding
-            int startIndex = 0;
+            var startIndex = 0;
             while (startIndex <= input.Length - 64)
             {
-                VKMD5.GetHashBlock(input, ref abcd, startIndex);
+                GetHashBlock(input, ref abcd, startIndex);
                 startIndex += 64;
             }
             // The final data block. 
-            return VKMD5.GetHashFinalBlock(input, startIndex, input.Length - startIndex, abcd, (long) input.Length * 8);
+            return GetHashFinalBlock(input, startIndex, input.Length - startIndex, abcd, (long) input.Length * 8);
         }
 
         internal static byte[] GetHashFinalBlock(byte[] input, int ibStart, int cbSize, ABCDStruct ABCD, long len)
         {
-            byte[] working = new byte[64];
-            byte[] length = BitConverter.GetBytes(len);
+            var working = new byte[64];
+            var length = BitConverter.GetBytes(len);
 
             //Padding is a single bit 1, followed by the number of 0s required to make size congruent to 448 modulo 512. Step 1 of RFC 1321  
             //The CLR ensures that our buffer is 0-assigned, we don't need to explicitly set it. This is why it ends up being quicker to just
@@ -128,7 +130,7 @@ namespace VK.WindowsPhone.SDK.Util
                 Array.Copy(length, 0, working, 56, 8);
                 GetHashBlock(working, ref ABCD, 0);
             }
-            byte[] output = new byte[16];
+            var output = new byte[16];
             Array.Copy(BitConverter.GetBytes(ABCD.A), 0, output, 0, 4);
             Array.Copy(BitConverter.GetBytes(ABCD.B), 0, output, 4, 4);
             Array.Copy(BitConverter.GetBytes(ABCD.C), 0, output, 8, 4);
@@ -145,11 +147,11 @@ namespace VK.WindowsPhone.SDK.Util
         */
         internal static void GetHashBlock(byte[] input, ref ABCDStruct ABCDValue, int ibStart)
         {
-            uint[] temp = Converter(input, ibStart);
-            uint a = ABCDValue.A;
-            uint b = ABCDValue.B;
-            uint c = ABCDValue.C;
-            uint d = ABCDValue.D;
+            var temp = Converter(input, ibStart);
+            var a = ABCDValue.A;
+            var b = ABCDValue.B;
+            var c = ABCDValue.C;
+            var d = ABCDValue.D;
 
             a = r1(a, b, c, d, temp[0], 7, 0xd76aa478);
             d = r1(d, a, b, c, temp[1], 12, 0xe8c7b756);
@@ -223,7 +225,6 @@ namespace VK.WindowsPhone.SDK.Util
             ABCDValue.B = unchecked(b + ABCDValue.B);
             ABCDValue.C = unchecked(c + ABCDValue.C);
             ABCDValue.D = unchecked(d + ABCDValue.D);
-            return;
         }
 
         //Manually unrolling these equations nets us a 20% performance improvement
@@ -267,13 +268,13 @@ namespace VK.WindowsPhone.SDK.Util
         private static uint[] Converter(byte[] input, int ibStart)
         {
             if (null == input)
-                throw new System.ArgumentNullException("input", "Unable convert null array to array of uInts");
+                throw new ArgumentNullException(nameof(input), "Unable convert null array to array of uInts");
 
-            uint[] result = new uint[16];
+            var result = new uint[16];
 
-            for (int i = 0; i < 16; i++)
+            for (var i = 0; i < 16; i++)
             {
-                result[i] = (uint) input[ibStart + i * 4];
+                result[i] = input[ibStart + i * 4];
                 result[i] += (uint) input[ibStart + i * 4 + 1] << 8;
                 result[i] += (uint) input[ibStart + i * 4 + 2] << 16;
                 result[i] += (uint) input[ibStart + i * 4 + 3] << 24;

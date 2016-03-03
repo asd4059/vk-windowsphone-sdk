@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VK.WindowsPhone.SDK.Util
 {
-    internal static class StrUtil
+    public static class StrUtil
     {
         public static string ForUI(this string backendTextString)
         {
@@ -49,5 +49,20 @@ namespace VK.WindowsPhone.SDK.Util
             return sb.ToString();
         }
 
+        public static string GetCommaSeparated(this IList<long> ids)
+        {
+            var sb = new StringBuilder();
+
+            var count = ids.Count;
+
+            for (var i = 0; i < count; i++)
+            {
+                sb = sb.Append(ids[i]);
+                if (i != count - 1)
+                    sb = sb.Append(",");
+            }
+
+            return sb.ToString();
+        }
     }
 }

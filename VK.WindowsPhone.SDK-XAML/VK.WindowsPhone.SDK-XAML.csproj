@@ -82,7 +82,9 @@
     <Compile Include="API\Request.NewsFeed.cs" />
     <Compile Include="API\Request.Users.cs" />
     <Compile Include="API\Request.Wall.cs" />
+    <Compile Include="API\Response\GetLongPollServerResponse.cs" />
     <Compile Include="API\Response\GetNewsResponse.cs" />
+    <Compile Include="API\Response\LongPollGetUpdatesResponse.cs" />
     <Compile Include="API\VKBackendResult.cs" />
     <Compile Include="API\VKCaptchaUserRequest.cs" />
     <Compile Include="API\VKError.cs" />

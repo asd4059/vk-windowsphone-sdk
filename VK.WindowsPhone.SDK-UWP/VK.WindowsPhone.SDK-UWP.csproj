@@ -249,8 +249,14 @@
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Request.Wall.cs">
       <Link>API\Request.Wall.cs</Link>
     </Compile>
+    <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Response\GetLongPollServerResponse.cs">
+      <Link>API\Response\GetLongPollServerResponse.cs</Link>
+    </Compile>
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Response\GetNewsResponse.cs">
       <Link>API\Response\GetNewsResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\Response\LongPollGetUpdatesResponse.cs">
+      <Link>API\Response\LongPollGetUpdatesResponse.cs</Link>
     </Compile>
     <Compile Include="..\VK.WindowsPhone.SDK-XAML\API\VKBackendResult.cs">
       <Link>API\VKBackendResult.cs</Link>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -13,8 +14,8 @@ namespace VK.WindowsPhone.SDK.API
             var className = splitStr[0];
             var functionName = splitStr[1];
 
-            var caller = typeof(Request).GetTypeInfo().DeclaredNestedTypes.First(t => t.Name.ToLower() == className);
-            var methodInfo = caller.DeclaredMethods.First(m=>m.Name.ToLower() == functionName);
+            var caller = typeof(Request).GetTypeInfo().DeclaredNestedTypes.First(t => string.Equals(t.Name, className, StringComparison.CurrentCultureIgnoreCase));
+            var methodInfo = caller.DeclaredMethods.First(m=>string.Equals(m.Name, functionName, StringComparison.CurrentCultureIgnoreCase));
 
             var parametersInfo = methodInfo.GetParameters();
 

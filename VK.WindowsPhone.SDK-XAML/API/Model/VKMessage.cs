@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using VK.WindowsPhone.SDK.Util;
+using Newtonsoft.Json;
 
 namespace VK.WindowsPhone.SDK.API.Model
 {
@@ -14,7 +15,8 @@ namespace VK.WindowsPhone.SDK.API.Model
 
         public int read_state { get; set; }
 
-        public int @out { get; set; }
+        [JsonProperty(PropertyName = "out")]
+        public int Out { get; set; }
 
         private string _title = "";
         public string title
@@ -77,5 +79,17 @@ namespace VK.WindowsPhone.SDK.API.Model
         public string photo_100 { get; set; }
 
         public string photo_200 { get; set; }
+
+        public string MaxResolutionPhoto
+        {
+            get
+            {
+                if (photo_200 != null)
+                    return photo_200;
+                if (photo_100 != null)
+                    return photo_100;
+                return photo_50;
+            }
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace VK.WindowsPhone.SDK
         /// <returns>Object saved via RegisterObject() method</returns>
         public static VKObject GetRegisteredObject(long registeredObjectId)
         {
-            VKObject obj = null;
+            VKObject obj;
             RegisteredObjects.TryGetValue(registeredObjectId, out obj);
             return obj;
         }
@@ -32,7 +32,7 @@ namespace VK.WindowsPhone.SDK
             {
                 var buffer = new byte[sizeof(long)];
                 Rand.NextBytes(buffer);
-                long nextRand = BitConverter.ToInt64(buffer, 0);
+                var nextRand = BitConverter.ToInt64(buffer, 0);
 
                 if (RegisteredObjects.ContainsKey(nextRand) || nextRand == 0)
                     continue;

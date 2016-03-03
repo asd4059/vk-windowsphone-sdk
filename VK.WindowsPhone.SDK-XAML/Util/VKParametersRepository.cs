@@ -6,9 +6,9 @@ namespace VK.WindowsPhone.SDK.Util
     /// <summary>
     /// Holds parameters for data exchange between pages
     /// </summary>
-    class VKParametersRepository
+    internal class VKParametersRepository
     {
-        private static Dictionary<string, object> _parametersDict = new Dictionary<string, object>();
+        private static readonly Dictionary<string, object> _parametersDict = new Dictionary<string, object>();
 
         public static void SetParameterForId(string paramId, object parameter)
         {
