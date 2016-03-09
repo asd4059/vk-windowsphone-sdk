@@ -6,8 +6,7 @@ namespace VK.WindowsPhone.SDK.API
     {
         public static class Friends
         {
-            public static async Task<VKBackendResult<T>> Get<T>(long user_id = -1, string order = null,
-                long list_id = -1, int count = -1, int offset = -1, string fields = null, string name_case = null)
+            public static async Task<VKBackendResult<T>> Get<T>(long user_id = -1, string order = null, long list_id = -1, int count = -1, int offset = -1, string fields = null, string name_case = null)
                 => await SendRequest<T>("friends.get", user_id, order, list_id, count, offset, fields, name_case);
         }
     }

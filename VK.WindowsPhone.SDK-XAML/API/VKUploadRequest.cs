@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using VK.WindowsPhone.SDK.API.Model;
 using VK.WindowsPhone.SDK.Util;
 
@@ -10,13 +10,12 @@ namespace VK.WindowsPhone.SDK.API
 {
     public class VKUploadRequest
     {
-
-        class VKUploadServerAddress
+        public class VKUploadServerAddress
         {
             public string upload_url { get; set; }
         }
 
-        class VKUploadResponseData
+        public class VKUploadResponseData
         {
             public string server { get; set; }
 
@@ -33,7 +32,7 @@ namespace VK.WindowsPhone.SDK.API
             public long gid { get; set; }
         }
 
-        enum UploadType
+        private enum UploadType
         {
             PhotoAlbumUpload,
             PhotoWallUpload,
@@ -55,40 +54,44 @@ namespace VK.WindowsPhone.SDK.API
 
         public static VKUploadRequest CreatePhotoAlbumUploadRequest(long albumId, long groupId = 0)
         {
-            var uploadRequest = new VKUploadRequest();
-
-            uploadRequest._uploadType = UploadType.PhotoAlbumUpload;
-            uploadRequest._albumId = albumId;
-            uploadRequest._groupId = groupId;
+            var uploadRequest = new VKUploadRequest
+            {
+                _uploadType = UploadType.PhotoAlbumUpload,
+                _albumId = albumId,
+                _groupId = groupId
+            };
 
             return uploadRequest;   
         }
 
         public static VKUploadRequest CreatePhotoWallUploadRequest(long ownerId=0)
         {
-            var uploadRequest = new VKUploadRequest();
-
-            uploadRequest._uploadType = UploadType.PhotoWallUpload;
-            uploadRequest._ownerId = ownerId;
+            var uploadRequest = new VKUploadRequest
+            {
+                _uploadType = UploadType.PhotoWallUpload,
+                _ownerId = ownerId
+            };
 
             return uploadRequest;
         }
 
         public static VKUploadRequest CreatePhotoProfileUploadRequest(long ownerId)
         {
-            var uploadRequest = new VKUploadRequest();
-
-            uploadRequest._uploadType = UploadType.PhotoProfileUpload;
-            uploadRequest._ownerId = ownerId;
+            var uploadRequest = new VKUploadRequest
+            {
+                _uploadType = UploadType.PhotoProfileUpload,
+                _ownerId = ownerId
+            };
 
             return uploadRequest;
         }
 
         public static VKUploadRequest CreatePhotoMessageUploadRequest()
         {
-            var uploadRequest = new VKUploadRequest();
-
-            uploadRequest._uploadType = UploadType.PhotoMessageUpload;
+            var uploadRequest = new VKUploadRequest
+            {
+                _uploadType = UploadType.PhotoMessageUpload
+            };
 
             return uploadRequest;
         }
@@ -120,7 +123,7 @@ namespace VK.WindowsPhone.SDK.API
             var parameters = new Dictionary<string, string>();
             if (_ownerId != 0)
             {
-                string paramName = _ownerId < 0 ? "group_id" : "user_id";
+                var paramName = _ownerId < 0 ? "group_id" : "user_id";
 
                 parameters[paramName] = Math.Abs(_ownerId).ToString();
             }
@@ -134,7 +137,7 @@ namespace VK.WindowsPhone.SDK.API
                 progressCallback);
         }
 
-        private void DispatchPhotoProfileUpload(Stream photoStream, Action<double> progressCallback, Action<VKBackendResult<VKPhoto>> callback)
+        private static void DispatchPhotoProfileUpload(Stream photoStream, Action<double> progressCallback, Action<VKBackendResult<VKPhoto>> callback)
         {
             var parameters = new Dictionary<string, string>();
 
@@ -147,7 +150,7 @@ namespace VK.WindowsPhone.SDK.API
               progressCallback);           
         }
 
-        private void DispatchPhotoMessageUpload(Stream photoStream, Action<double> progressCallback, Action<VKBackendResult<VKPhoto>> callback)
+        private static void DispatchPhotoMessageUpload(Stream photoStream, Action<double> progressCallback, Action<VKBackendResult<VKPhoto>> callback)
         {
             var parameters = new Dictionary<string, string>();
 
@@ -162,14 +165,14 @@ namespace VK.WindowsPhone.SDK.API
 
         private void DispatchPhotoAlbumUpload(Stream photoStream, Action<double> progressCallback, Action<VKBackendResult<VKPhoto>> callback)
         {
-            var parameters = new Dictionary<string, string>();
+            var parameters = new Dictionary<string, string>
+            {
+                ["album_id"] = _albumId.ToString()
+            };
 
-            parameters["album_id"] = _albumId.ToString();
 
             if (_groupId != 0)
-            {
                 parameters["group_id"] = _groupId.ToString();
-            }
 
 
             UploadPhoto(photoStream,
@@ -181,7 +184,7 @@ namespace VK.WindowsPhone.SDK.API
                 progressCallback);                  
         }
 
-        private void UploadPhoto(Stream photoStream,
+        private static void UploadPhoto(Stream photoStream,
             string getServerMethodName,
             Dictionary<string, string> parameters,
             string saveMethodName,
@@ -196,7 +199,7 @@ namespace VK.WindowsPhone.SDK.API
             var getServerRequest = new VKRequest(vkParams);
 
             getServerRequest.Dispatch<VKUploadServerAddress>(
-               (res) =>
+               res =>
                {
                    if (res.ResultCode == VKResultCode.Succeeded)
                    {
@@ -207,7 +210,7 @@ namespace VK.WindowsPhone.SDK.API
                             photoStream,
                             "file1",
                             "image",
-                            (uploadRes) =>
+                            uploadRes =>
                             {
                                 if (uploadRes.IsSucceeded)
                                 {
@@ -216,21 +219,13 @@ namespace VK.WindowsPhone.SDK.API
                                     var uploadData = JsonConvert.DeserializeObject<VKUploadResponseData>(serverPhotoHashJson);
                                  
                                     if (!string.IsNullOrWhiteSpace(uploadData.server))
-                                    {
                                         parameters["server"] = uploadData.server;
-                                    }
                                     if (!string.IsNullOrWhiteSpace(uploadData.photos_list))
-                                    {
                                         parameters["photos_list"] = uploadData.photos_list;
-                                    }
                                     if (!string.IsNullOrWhiteSpace(uploadData.hash))
-                                    {
                                         parameters["hash"] = uploadData.hash;
-                                    }
                                     if (!string.IsNullOrWhiteSpace(uploadData.photo))
-                                    {
                                         parameters["photo"] = uploadData.photo;
-                                    }                                    
 
                                     var saveWallPhotoVKParams = new VKRequestParameters(saveMethodName,
                                         parameters);
@@ -239,7 +234,7 @@ namespace VK.WindowsPhone.SDK.API
 
                                     saveWallPhotoRequest.Dispatch(
                                         callback,
-                                        (jsonStr) =>
+                                        jsonStr =>
                                         {
                                             if (saveReturnsList)
                                             {

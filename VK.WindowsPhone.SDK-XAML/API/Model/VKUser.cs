@@ -194,16 +194,18 @@ namespace VK.WindowsPhone.SDK.API.Model
 
         public string maiden_name { get; set; }
 
-        public string GetMaxResolutionPhoto()
+        public string MaxResolutionPhoto
         {
-
-            if (photo_max != null)
-                return photo_max;
-            if (photo_200 != null)
-                return photo_200;
-            if (photo_100 != null)
-                return photo_100;
-            return photo_50;
+            get
+            {
+                if (photo_max != null)
+                    return photo_max;
+                if (photo_200 != null)
+                    return photo_200;
+                if (photo_100 != null)
+                    return photo_100;
+                return photo_50;
+            }
         }
     }
 
