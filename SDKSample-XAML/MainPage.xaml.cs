@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using VK.WindowsPhone.SDK;
-using VK.WindowsPhone.SDK.API;
-using VK.WindowsPhone.SDK.API.Model;
-//using VK.WindowsPhone.SDK.Pages;
-using VK.WindowsPhone.SDK.Util;
-using VK.WindowsPhone.SDK_XAML.Pages;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Store;
-//using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using VK.WindowsPhone.SDK;
+using VK.WindowsPhone.SDK.API;
+using VK.WindowsPhone.SDK.API.Model;
+using VK.WindowsPhone.SDK.Util;
+using VK.WindowsPhone.SDK_XAML.Pages;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -28,7 +25,7 @@ namespace SDKSample_XAML
 
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             AuthorizeButton.Click += AuthorizeButtonOnClick;
             AuthorizeButton2.Click += AuthorizeButton2_Click;
             VKSDK.Initialize("4460217");
@@ -42,12 +39,12 @@ namespace SDKSample_XAML
 
             VKSDK.CaptchaRequest = CaptchaRequest;
 
-            this.NavigationCacheMode = NavigationCacheMode.Required;
+            NavigationCacheMode = NavigationCacheMode.Required;
 
             UpdateUIState();
         }    
 
-        private void CaptchaRequest(VKCaptchaUserRequest captchaUserRequest, Action<VKCaptchaUserResponse> action)
+        private static void CaptchaRequest(VKCaptchaUserRequest captchaUserRequest, Action<VKCaptchaUserResponse> action)
         {       
             new VKCaptchaRequestUserControl().ShowCaptchaRequest(captchaUserRequest, action);
         }
@@ -88,10 +85,10 @@ namespace SDKSample_XAML
 
         private void AuthorizeButtonOnClick(object sender, RoutedEventArgs routedEventArgs)
         {
-            VKSDK.Authorize(_scope, false, false);
+            VKSDK.Authorize(_scope);
         }
 
-        void AuthorizeButton2_Click(object sender, RoutedEventArgs e)
+        private void AuthorizeButton2_Click(object sender, RoutedEventArgs e)
         {
             VKSDK.Authorize(_scope, false, false, LoginType.VKApp);
         }
@@ -99,7 +96,7 @@ namespace SDKSample_XAML
 
         public void UpdateUIState()
         {
-            bool isLoggedIn = VKSDK.IsLoggedIn;
+            var isLoggedIn = VKSDK.IsLoggedIn;
 
             NotAuthorizedContent.Visibility = isLoggedIn ? Visibility.Collapsed : Visibility.Visible;
 
@@ -123,7 +120,7 @@ namespace SDKSample_XAML
         {
             var request = new VKRequest(new VKRequestParameters("captcha.force"));
 
-            request.Dispatch<object>((res) => { }, (json) => new object());
+            request.Dispatch(res => { }, json => new object());
         }
 
         private void GetUserInfoButton_Click(object sender, RoutedEventArgs e)
@@ -132,7 +129,7 @@ namespace SDKSample_XAML
                new VKRequestParameters(
                    "users.get",
                    "fields", "photo_200, city, country"),
-               (res) =>
+               res =>
                {
                    if (res.ResultCode == VKResultCode.Succeeded)
                    {
@@ -151,7 +148,7 @@ namespace SDKSample_XAML
         private void GetFriends_Click(object sender, RoutedEventArgs e)
         {
             VKRequest.Dispatch<VKList<VKUser>>(new VKRequestParameters("friends.get", "fields", "photo_200"),
-               (res) =>
+               res =>
                {
                    VKExecute.ExecuteOnUIThread(() =>
                    {
@@ -185,11 +182,9 @@ namespace SDKSample_XAML
                 var results = await CurrentAppSimulator.RequestProductPurchaseAsync("product1");
 
                 if (results.Status == ProductPurchaseStatus.Succeeded)
-                {
                     VKAppPlatform.Instance.ReportInAppPurchase(new VKAppPlatform.InAppPurchaseData(results.ReceiptXml, product.FormattedPrice));
-                }
             }
-            catch (Exception exc)
+            catch (Exception)
             {
                 /* Handle exception */
             }
